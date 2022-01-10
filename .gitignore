@@ -2,9 +2,11 @@ Library/
 Temp/
 obj/
 Logs/
+UserSettings/
 
 .vs/
 .vscode/
+.idea/
 
 *.sln
 *.csproj
