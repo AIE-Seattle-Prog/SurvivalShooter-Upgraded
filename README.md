@@ -1,6 +1,6 @@
 # Survival Shooter Upgraded
 
-This is a copy of the Survival Shooter project upgraded for Unity 2019.3.6f1
+This is a copy of the Survival Shooter project upgraded for Unity 2020.3.5f1
 and newer. It is provided as a part of the instructional content at AIE Seattle.
 
 All tutorial content and problems are implemented in their entirety in the
@@ -13,7 +13,7 @@ Technologies on [Unity Learn][U3D_SurvivalShooter].
 
 ## License
 
-Copyright (c) 2018-2020 Academy of Interactive Entertainment
+Copyright (c) 2018-2021 Academy of Interactive Entertainment
 
 Unless stated otherwise, the contents of this project are licensed under the MIT
 License.
