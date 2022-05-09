@@ -1,14 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnitySampleAssets.CrossPlatformInput;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 6f;            // The speed that the player will move at.
-
-
     Vector3 movement;                   // The vector to store the direction of the player's movement.
-    Animator anim;                      // Reference to the animator component.
-    Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
+    
+    public Animator anim;                      // Reference to the animator component.
+    public Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 #if !MOBILE_INPUT
     int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
     float camRayLength = 100f;          // The length of the ray from the camera into the scene.
@@ -20,10 +20,6 @@ public class PlayerMovement : MonoBehaviour
         // Create a layer mask for the floor layer.
         floorMask = LayerMask.GetMask ("Floor");
 #endif
-
-        // Set up references.
-        anim = GetComponent <Animator> ();
-        playerRigidbody = GetComponent <Rigidbody> ();
     }
 
 
@@ -101,8 +97,7 @@ public class PlayerMovement : MonoBehaviour
         }
 #endif
     }
-
-
+    
     void Animating (float h, float v)
     {
         // Create a boolean that is true if either of the input axes is non-zero.
@@ -110,5 +105,11 @@ public class PlayerMovement : MonoBehaviour
 
         // Tell the animator whether or not the player is walking.
         anim.SetBool ("IsWalking", walking);
+    }
+
+    private void Reset()
+    {
+        anim = GetComponent<Animator>();
+        playerRigidbody = GetComponent<Rigidbody>();
     }
 }
