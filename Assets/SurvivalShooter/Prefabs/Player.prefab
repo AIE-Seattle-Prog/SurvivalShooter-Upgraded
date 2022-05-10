@@ -183,6 +183,10 @@ MonoBehaviour:
   deathClip: {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}
   flashSpeed: 5
   flashColour: {r: 1, g: 0, b: 0, a: 0.1}
+  anim: {fileID: 3731580488794163854}
+  playerAudio: {fileID: 8200002}
+  playerMovement: {fileID: 176715523}
+  playerShooting: {fileID: 2025858298516265474}
 --- !u!114 &176715523
 MonoBehaviour:
   m_ObjectHideFlags: 0
