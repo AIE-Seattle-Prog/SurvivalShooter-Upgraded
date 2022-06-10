@@ -8,6 +8,7 @@ public class EnemyHealth : MonoBehaviour
     public int scoreValue = 10;                 // The amount added to the player's score when the enemy dies.
     public AudioClip deathClip;                 // The sound to play when the enemy dies.
 
+    public float knockbackImpulse = 5.0f;
 
     Animator anim;                              // Reference to the animator.
     AudioSource enemyAudio;                     // Reference to the audio source.
@@ -59,6 +60,16 @@ public class EnemyHealth : MonoBehaviour
 
         // And play the particles.
         hitParticles.Play();
+
+        // Apply knockback
+        Vector3 knockVector = (transform.position - hitPoint);
+        knockVector.y = 0.0f;
+        knockVector.Normalize();
+        knockVector *= knockbackImpulse;
+        if(TryGetComponent<UnityEngine.AI.NavMeshAgent>(out var agent))
+        {
+            agent.nextPosition += knockVector;
+        }
 
         // If the current health is less than or equal to zero...
         if(currentHealth <= 0)
