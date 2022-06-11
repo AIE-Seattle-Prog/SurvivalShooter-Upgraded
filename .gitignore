@@ -8,6 +8,10 @@ Recordings/
 
 Builds/
 
+# Packaging
+
+Packaging/*.zip
+
 # Rider
 .idea/
 
