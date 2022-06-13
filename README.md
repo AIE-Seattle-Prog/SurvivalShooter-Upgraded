@@ -2,14 +2,12 @@
 
 ![A screenshot of the game showing the player shooting at a Zombunny](.github/screenshot.png)
 
-This is a copy of the **Survival Shooter** project upgraded for newer versions
-of Unity. It is provided as a part of the instructional content at AIE Seattle.
+This builds on the **Survival Shooter** tutorial project from Unity. It is
+provided as a part of the instructional content at AIE Seattle.
 
-All tutorial content and problems are implemented in their entirety in the
-Unity project contained within.
-
-The original copy of the Survival Shooter is available for free from Unity
-Technologies on [Unity Learn][U3D_SurvivalShooter].
+The original copy of the Survival Shooter was originally available for free from
+Unity Technologies on [Unity Learn][U3D_SurvivalShooter] and licensed under
+Apache License 2.0.
 
 [U3D_SurvivalShooter]:https://learn.unity.com/project/survival-shooter-tutorial
 
