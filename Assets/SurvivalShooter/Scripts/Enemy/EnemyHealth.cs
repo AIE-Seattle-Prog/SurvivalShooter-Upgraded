@@ -42,7 +42,7 @@ public class EnemyHealth : MonoBehaviour
     }
 
 
-    public void TakeDamage (int amount, Vector3 hitPoint)
+    public void TakeDamage (int amount, Vector3 hitPoint, GameObject attacker)
     {
         // If the enemy is dead...
         if(isDead)
@@ -60,14 +60,23 @@ public class EnemyHealth : MonoBehaviour
 
         // And play the particles.
         hitParticles.Play();
-
-        // Apply knockback
-        Vector3 knockVector = (transform.position - hitPoint);
-        knockVector.y = 0.0f;
-        knockVector.Normalize();
-        knockVector *= knockbackImpulse;
+        
+        // Apply knockback on hit, if applicable to this enemy.
+        // TODO: cache this component
         if(TryGetComponent<UnityEngine.AI.NavMeshAgent>(out var agent))
         {
+            // Apply knockback
+            Vector3 knockVector = (transform.position - attacker.transform.position);
+            knockVector.y = 0.0f;
+            knockVector.Normalize();
+        
+            Vector3 hitVector = (transform.position - hitPoint);
+            hitVector.y = 0.0f;
+            hitVector.Normalize();
+
+            // scale knockback by how close it was to the center of the target
+            float knockMag = Mathf.Max(0, Vector3.Dot(knockVector, hitVector));
+            knockVector *= knockbackImpulse * knockMag;
             agent.nextPosition += knockVector;
         }
 

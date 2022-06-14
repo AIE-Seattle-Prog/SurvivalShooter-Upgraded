@@ -100,7 +100,7 @@ public class PlayerShooting : MonoBehaviour
             if(enemyHealth != null)
             {
                 // ... the enemy should take damage.
-                enemyHealth.TakeDamage (damagePerShot, shootHit.point);
+                enemyHealth.TakeDamage (damagePerShot, shootHit.point, gameObject);
             }
 
             // Set the second position of the line renderer to the point the raycast hit.
