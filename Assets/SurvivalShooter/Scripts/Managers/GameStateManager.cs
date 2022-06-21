@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -12,11 +13,16 @@ public class GameStateManager : MonoBehaviour
     public float startDelay = 1.0f;
     public float gameOverDelay = 1.0f;
     public float restartDelay = 3.0f;
-
+    
+    public AudioClip inProgressChime;
+    public AudioClip gameoverChime;
+    public AudioSource gameStateAudioSource;
+    
     private float transitionDelay = 0.0f;
+    public float TransitionDelay => transitionDelay;
 
     private int sceneBuildIndex;
-
+    
     public enum GameState
     {
         None,
@@ -28,6 +34,10 @@ public class GameStateManager : MonoBehaviour
     
     [SerializeField]
     private EnemyManager[] enemyManagers;
+
+    public UnityEvent<GameState> OnGameStateChanged; 
+    
+    public static GameStateManager Instance { get; private set; }
 
     void ToGameState(GameState newState)
     {
@@ -65,20 +75,41 @@ public class GameStateManager : MonoBehaviour
                 // turn on all of the spawners
                 foreach (var spawner in enemyManagers) { spawner.enabled = true; }
                 transitionDelay = gameOverDelay;
+                if(inProgressChime != null) { gameStateAudioSource.PlayOneShot(inProgressChime); }
                 break;
             case GameState.End:
                 // ... tell the animator the game is over.
                 hudAnimator.SetTrigger ("GameOver");
                 transitionDelay = restartDelay;
+                if(gameoverChime != null) { gameStateAudioSource.PlayOneShot(gameoverChime); }
                 break;
             default:
                 Debug.LogError("Unhandled entry to game state: " + CurrentGameState);
                 break;
         }
 
+        // update bookkeeping
         CurrentGameState = newState;
+        
+        // fire events
+        OnGameStateChanged.Invoke(CurrentGameState);
     }
-    
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Debug.Log("GameStateManager instance registered.");
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Duplicate GameStateManager detected on gameObject! Self-destructing...", gameObject);
+            Destroy(this);
+            return;
+        }
+    }
+
     void Start()
     {
         sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
