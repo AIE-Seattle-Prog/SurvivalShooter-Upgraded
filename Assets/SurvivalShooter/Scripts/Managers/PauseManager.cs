@@ -6,48 +6,48 @@ using UnityEngine.Audio;
 using UnityEditor;
 #endif
 
-public class PauseManager : MonoBehaviour {
-	
+public class PauseManager : MonoBehaviour
+{	
+	public static PauseManager Instance { get; private set; }
+
 	public AudioMixerSnapshot paused;
 	public AudioMixerSnapshot unpaused;
 	
 	Canvas canvas;
-	
-	void Start()
+
+	public bool IsPaused => Time.timeScale == 0;
+
+
+	private void Awake()
+    {
+		Instance = this;
+    }
+
+    private void Start()
 	{
 		canvas = GetComponent<Canvas>();
 	}
-	
-	void Update()
+
+	public void SetPause(bool shouldPause)
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			canvas.enabled = !canvas.enabled;
-			Pause();
-		}
+		canvas.enabled = shouldPause;
+		PauseTime(shouldPause);
 	}
-	
-	public void Pause()
+
+	private void PauseTime(bool shouldPause)
 	{
-		Time.timeScale = Time.timeScale == 0 ? 1 : 0;
-		Lowpass ();
-		
-	}
-	
-	void Lowpass()
-	{
-		if (Time.timeScale == 0)
+		Time.timeScale = shouldPause ? 0 : 1;
+
+		if (shouldPause)
 		{
 			paused.TransitionTo(.01f);
 		}
-		
 		else
-			
 		{
 			unpaused.TransitionTo(.01f);
 		}
 	}
-	
+
 	public void Quit()
 	{
 		#if UNITY_EDITOR 

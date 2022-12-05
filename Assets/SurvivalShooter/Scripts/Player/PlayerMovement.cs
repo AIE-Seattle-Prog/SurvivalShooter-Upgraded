@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnitySampleAssets.CrossPlatformInput;
+using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,6 +16,11 @@ public class PlayerMovement : MonoBehaviour
     float camRayLength = 100f;          // The length of the ray from the camera into the scene.
 #endif
 
+    public PlayerInput input;
+
+    private float moveHorizontal = 0.0f;
+    private float moveVertical = 0.0f;
+
     void Awake ()
     {
 #if !MOBILE_INPUT
@@ -22,23 +29,20 @@ public class PlayerMovement : MonoBehaviour
 #endif
     }
 
-
     void FixedUpdate ()
     {
-        // Store the input axes.
-        float h = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-        float v = CrossPlatformInputManager.GetAxisRaw("Vertical");
-
         // Move the player around the scene.
-        Move (h, v);
+        Move (moveHorizontal, moveVertical);
 
         // Turn the player to face the mouse cursor.
         Turning ();
 
         // Animate the player.
-        Animating (h, v);
+        Animating (moveHorizontal, moveVertical);
     }
 
+    public void SetMoveHorizontal(float horizontal) { moveHorizontal = horizontal; }
+    public void SetMoveForward(float forward) { moveVertical = forward; }
 
     void Move (float h, float v)
     {
@@ -57,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
     {
 #if !MOBILE_INPUT
         // Create a ray from the mouse cursor on screen in the direction of the camera.
-        Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+        Ray camRay = Camera.main.ScreenPointToRay (input.currentActionMap["Aim"].ReadValue<Vector2>());
 
         // Create a RaycastHit variable to store information about what was hit by the ray.
         RaycastHit floorHit;

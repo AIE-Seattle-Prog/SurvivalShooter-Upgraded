@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 using UnitySampleAssets.CrossPlatformInput;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -12,21 +14,24 @@ public class PlayerShooting : MonoBehaviour
     RaycastHit shootHit;                            // A raycast hit to get information about what was hit.
     int shootableMask;                              // A layer mask so the raycast only hits things on the shootable layer.
 
-    public Transform gunTipTransform;                      // Reference to the gun's tip.
-    public ParticleSystem gunParticles;                    // Reference to the particle system.
-    public LineRenderer gunLine;                           // Reference to the line renderer.
-    public AudioSource gunAudio;                           // Reference to the audio source.
-    public Light gunLight;                                 // Reference to the light component.
+    public Transform gunTipTransform;               // Reference to the gun's tip.
+    public ParticleSystem gunParticles;             // Reference to the particle system.
+    public LineRenderer gunLine;                    // Reference to the line renderer.
+    public AudioSource gunAudio;                    // Reference to the audio source.
+    public Light gunLight;                          // Reference to the light component.
     
-    public Light faceLight;								// Duh
+    public Light faceLight;							// Duh
     float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
+
+    public PlayerInput input;
+
+    public bool isFiring = false;
 
     void Awake ()
     {
         // Create a layer mask for the Shootable layer.
         shootableMask = LayerMask.GetMask ("Shootable");
     }
-
 
     void Update ()
     {
@@ -35,7 +40,7 @@ public class PlayerShooting : MonoBehaviour
 
 #if !MOBILE_INPUT
         // If the Fire1 button is being press and it's time to fire...
-        if(Input.GetButton ("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
+        if(isFiring && timer >= timeBetweenBullets && Time.timeScale != 0)
         {
             // ... shoot the gun.
             Shoot ();
@@ -64,7 +69,6 @@ public class PlayerShooting : MonoBehaviour
         faceLight.enabled = false;
         gunLight.enabled = false;
     }
-
 
     void Shoot ()
     {

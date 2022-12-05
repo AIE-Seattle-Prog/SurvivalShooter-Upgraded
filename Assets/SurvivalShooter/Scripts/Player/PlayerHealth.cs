@@ -22,6 +22,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     private AudioSource playerAudio;                                    // Reference to the AudioSource component.
     [SerializeField]
+    private AudioClip playerHurtSound;
+    [SerializeField]
     private PlayerMovement playerMovement;                              // Reference to the player's movement.
     [SerializeField]
     private PlayerShooting playerShooting;                              // Reference to the PlayerShooting script.
@@ -67,10 +69,10 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.value = currentHealth;
 
         // Play the hurt sound effect.
-        playerAudio.Play ();
+        playerAudio.PlayOneShot(playerHurtSound);
 
         // If the player has lost all it's health and the death flag hasn't been set yet...
-        if(currentHealth <= 0 && !isDead)
+        if (currentHealth <= 0 && !isDead)
         {
             // ... it should die.
             Death ();
