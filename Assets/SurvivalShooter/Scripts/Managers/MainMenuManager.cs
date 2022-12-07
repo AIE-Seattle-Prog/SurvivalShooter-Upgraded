@@ -119,7 +119,7 @@ public class MainMenuManager : MonoBehaviour
 
             timer += Time.deltaTime;
 
-            await UniTask.Yield(token);
+            await UniTask.Yield(token); // yield return null in a coroutine
         }
 
         group.alpha = targetAlpha;
@@ -140,7 +140,11 @@ public class MainMenuManager : MonoBehaviour
         settingsButton.interactable = false;
         quitGameButton.interactable = false;
 
+        Debug.Log("Wait for animation...");
+
         await UniTask.WaitUntil(() => !animRunner.isPlaying, cancellationToken: canvasCancellationSource.Token);
+
+        Debug.Log("Animation finished! Enable menu...");
 
         await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
         playButton.interactable = true;
@@ -152,7 +156,7 @@ public class MainMenuManager : MonoBehaviour
         quitGameButton.interactable = true;
     }
     
-    private async void Start()
+    private void Start()
     {
         PresentMainMenu(canvasCancellationSource.Token);
     }
