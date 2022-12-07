@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 using Cysharp.Threading.Tasks;
-
 
 public class MainMenuManager : MonoBehaviour
 {
+    [Header("UI Controls")]
     [SerializeField]
     private Button playButton;
     [SerializeField]
@@ -26,7 +25,14 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField]
     private GameObject settingsPanel;
 
+    private CancellationTokenSource canvasCancellationSource;
     private CancellationTokenSource transitionCancellationSource;
+
+    [Header("UI Animations")]
+    [SerializeField]
+    private Animation animRunner;
+    [SerializeField]
+    private AnimationClip startClip;
 
     public enum Menus
     {
@@ -124,14 +130,45 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
     }
 
+    private async void PresentMainMenu(CancellationToken token)
+    {
+        animRunner.AddClip(startClip, "Start");
+        animRunner.Play("Start");
+
+        playButton.interactable = false;
+        howToPlayButton.interactable = false;
+        settingsButton.interactable = false;
+        quitGameButton.interactable = false;
+
+        await UniTask.WaitUntil(() => !animRunner.isPlaying, cancellationToken: canvasCancellationSource.Token);
+
+        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+        playButton.interactable = true;
+        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+        howToPlayButton.interactable = true;
+        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+        settingsButton.interactable = true;
+        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+        quitGameButton.interactable = true;
+    }
+    
+    private async void Start()
+    {
+        PresentMainMenu(canvasCancellationSource.Token);
+    }
+
     private void OnEnable()
     {
         transitionCancellationSource = new CancellationTokenSource();
+        canvasCancellationSource = new CancellationTokenSource();
     }
 
     private void OnDisable()
     {
         transitionCancellationSource.Cancel();
         transitionCancellationSource.Dispose();
+
+        canvasCancellationSource.Cancel();
+        canvasCancellationSource.Dispose();
     }
 }
