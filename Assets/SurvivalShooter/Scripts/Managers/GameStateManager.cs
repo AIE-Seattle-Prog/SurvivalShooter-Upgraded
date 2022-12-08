@@ -35,11 +35,13 @@ public class GameStateManager : MonoBehaviour
     
     public static GameStateManager Instance { get; private set; }
 
-    [Header("Sub-Managers")]
-    public PlayerHealth playerHealth;       // Reference to the player's health.    
-    [SerializeField]
-    private EnemyManager enemyManager;
-    public Animator hudAnimator;       // Reference to the animator component.
+    [field: Header("Sub-Managers")]
+    [field: SerializeField]
+    public PlayerHealth playerHealth { get; private set; }       // Reference to the player's health.    
+    [field: SerializeField]
+    public EnemyManager enemyManager { get; private set; }
+    [field: SerializeField]
+    public Animator hudAnimator { get; private set; }       // Reference to the animator component.
 
     public void RestartLevel ()
     {

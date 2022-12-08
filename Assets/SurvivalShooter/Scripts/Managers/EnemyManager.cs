@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -16,6 +17,21 @@ public class EnemyManager : MonoBehaviour
     public bool IsCurrentlySpawning { get; private set; }
 
     private CancellationTokenSource spawnerCancellationSource;
+
+    private int enemyCount;
+    public int EnemyCount
+    {
+        get => enemyCount;
+        set
+        {
+            if(enemyCount == value) { return; }
+            enemyCount = value;
+            OnEnemyCountChanged.Invoke(enemyCount);
+        }
+    }
+
+    [field: SerializeField]
+    public UnityEvent<int> OnEnemyCountChanged { get; private set; }
 
     private void OnEnable()
     {
@@ -66,7 +82,7 @@ public class EnemyManager : MonoBehaviour
                 int enemyIndex = UnityEngine.Random.Range(0, enemies.Length);
 
                 // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-                Instantiate(enemies[enemyIndex], spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+                SpawnEnemy(enemies[enemyIndex], spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
 
                 await UniTask.Delay(TimeSpan.FromSeconds(minimumSpawnDelay), cancellationToken: cancelToken);
             }
@@ -78,5 +94,21 @@ public class EnemyManager : MonoBehaviour
         {
             Debug.Log("Spawn Wave cancelled.");
         }
+    }
+
+    private EnemyHealth SpawnEnemy(GameObject enemyPrefab, Vector3 position, Quaternion rotation)
+    {
+        var babyEnemy = Instantiate(enemyPrefab, position, rotation);
+        ++EnemyCount;
+
+        EnemyHealth enemyHealth = babyEnemy.GetComponent<EnemyHealth>();
+        enemyHealth.OnDeath.AddListener(HandleEnemyDeath);
+
+        return enemyHealth;
+    }
+
+    private void HandleEnemyDeath()
+    {
+        --EnemyCount;
     }
 }
