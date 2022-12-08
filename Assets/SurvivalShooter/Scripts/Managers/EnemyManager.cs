@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -29,29 +30,37 @@ public class EnemyManager : MonoBehaviour
             OnEnemyCountChanged.Invoke(enemyCount);
         }
     }
+    private int enemySpawnCount = 0;
 
     [field: SerializeField]
     public UnityEvent<int> OnEnemyCountChanged { get; private set; }
 
+    [field: SerializeField]
+    public UnityEvent<int> OnEnemyQuotaMet { get; private set; }
+
     public int EnemyQuota { get; private set; }
-    private int enemyQuotaProgress = 0;
+    public bool IsEnemyQuotaMet => enemySpawnCount >= EnemyQuota;
+    
     // TODO: figure this out from enemyCount
     private int enemiesKilled;
     public int EnemiesRemaining => EnemyQuota - enemiesKilled;
+
     public void SetNewEnemyQuota(int newQuota)
     {
         EnemyQuota = newQuota;
-        enemyQuotaProgress = 0;
+        enemySpawnCount = 0;
         enemiesKilled = 0;
     }
 
-    private void OnEnable()
+    private async void OnEnable()
     {
         spawnerCancellationSource = new CancellationTokenSource();
 
-        DoSpawnWaveInterval(spawnerCancellationSource.Token);
-
-        // TODO: allow resume quota spawning, if not yet met after enabling
+        bool result = await DoSpawnWaveInterval(spawnerCancellationSource.Token);
+        if (result)
+        {
+            OnEnemyQuotaMet.Invoke(EnemyQuota);
+        }
     }
 
     private void OnDisable()
@@ -63,32 +72,35 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private async void DoSpawnWaveInterval(CancellationToken cancelToken)
+    private async Task<bool> DoSpawnWaveInterval(CancellationToken cancelToken)
     {
         try
         {
-            while (!cancelToken.IsCancellationRequested)
-            {
-                int spawnCountThisWave = Mathf.Min(EnemyQuota - enemyQuotaProgress, spawnWaveCount);
-                DoSpawnWave(spawnCountThisWave, cancelToken);
-                await UniTask.WaitUntil(() => !IsCurrentlySpawning, cancellationToken: cancelToken);
+            bool isFirstWave = true;
 
-                if(enemyQuotaProgress >= EnemyQuota)
+            while (enemySpawnCount < EnemyQuota)
+            {
+                if (!isFirstWave)
                 {
-                    Debug.Log("Quota met, ending spawn wave complete.");
-                    return;
+                    await UniTask.Delay(TimeSpan.FromSeconds(minimumWaveDelay), cancellationToken: cancelToken);
                 }
 
-                await UniTask.Delay(TimeSpan.FromSeconds(minimumWaveDelay), cancellationToken: cancelToken);
+                int spawnCountThisWave = Mathf.Min(EnemyQuota - enemySpawnCount, spawnWaveCount);
+                bool waveSpawnSuccess = await DoSpawnWave(spawnCountThisWave, cancelToken);
+                isFirstWave = false;
             }
+
+            Debug.Log("Quota met, ending spawn wave complete.");
+            return true;
         }
         catch (OperationCanceledException)
         {
             Debug.Log("Spawn Interval cancelled.");
+            return false;
         }
     }
 
-    private async void DoSpawnWave(int spawnCount, CancellationToken cancelToken)
+    private async Task<bool> DoSpawnWave(int spawnCount, CancellationToken cancelToken)
     {
         try
         {
@@ -111,10 +123,12 @@ public class EnemyManager : MonoBehaviour
 
             IsCurrentlySpawning = false;
             Debug.Log("Spawn wave completed.");
+            return true;
         }
         catch (OperationCanceledException)
         {
             Debug.Log("Spawn Wave cancelled.");
+            return false;
         }
     }
 
@@ -122,7 +136,7 @@ public class EnemyManager : MonoBehaviour
     {
         var babyEnemy = Instantiate(enemyPrefab, position, rotation);
         ++EnemyCount;
-        ++enemyQuotaProgress;
+        ++enemySpawnCount;
 
         EnemyHealth enemyHealth = babyEnemy.GetComponent<EnemyHealth>();
         enemyHealth.OnDeath.AddListener(HandleEnemyDeath);
@@ -132,7 +146,6 @@ public class EnemyManager : MonoBehaviour
 
     private void HandleEnemyDeath()
     {
-        Debug.Log("Enemy death!");
         ++enemiesKilled;
         --EnemyCount;
     }
