@@ -11,17 +11,19 @@ public class GameStateManager : MonoBehaviour
     public Animator hudAnimator;       // Reference to the animator component.
 
     public float startDelay = 1.0f;
+    public AudioClip inProgressChime;
+
     public float gameOverDelay = 1.0f;
+    public AudioClip gameoverChime;
+
     public float restartDelay = 3.0f;
     
-    public AudioClip inProgressChime;
-    public AudioClip gameoverChime;
     public AudioSource gameStateAudioSource;
     
     private float transitionDelay = 0.0f;
     public float TransitionDelay => transitionDelay;
 
-    private int sceneBuildIndex;
+    private int currentSceneBuildIndex;
     
     public enum GameState
     {
@@ -112,7 +114,7 @@ public class GameStateManager : MonoBehaviour
 
     void Start()
     {
-        sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
+        currentSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
         ToGameState(GameState.Warmup);
     }
 
@@ -159,6 +161,6 @@ public class GameStateManager : MonoBehaviour
     public void RestartLevel ()
     {
         // Reload the level that is currently loaded.
-        SceneManager.LoadScene (sceneBuildIndex);
+        SceneManager.LoadScene (currentSceneBuildIndex);
     }
 }

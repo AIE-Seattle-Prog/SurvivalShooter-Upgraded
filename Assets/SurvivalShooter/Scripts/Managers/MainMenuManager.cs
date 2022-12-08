@@ -109,20 +109,27 @@ public class MainMenuManager : MonoBehaviour
 
     private async Task DoAlphaTransitionAsync(CanvasGroup group, float targetAlpha, float duration, CancellationToken token)
     {
-        float startAlpha = group.alpha;
-        float timer = 0.0f;
-        while(timer < duration)
+        try
         {
-            float progress = timer / duration;
+            float startAlpha = group.alpha;
+            float timer = 0.0f;
+            while (timer < duration)
+            {
+                float progress = timer / duration;
 
-            group.alpha = Mathf.Lerp(startAlpha, targetAlpha, progress);
+                group.alpha = Mathf.Lerp(startAlpha, targetAlpha, progress);
 
-            timer += Time.deltaTime;
+                timer += Time.deltaTime;
 
-            await UniTask.Yield(token); // yield return null in a coroutine
+                await UniTask.Yield(token); // yield return null in a coroutine
+            }
+
+            group.alpha = targetAlpha;
         }
-
-        group.alpha = targetAlpha;
+        catch(OperationCanceledException)
+        {
+            Debug.Log("Alpha transition cancelled");
+        }
     }
 
     public void QuitGame()
@@ -132,28 +139,35 @@ public class MainMenuManager : MonoBehaviour
 
     private async void PresentMainMenu(CancellationToken token)
     {
-        animRunner.AddClip(startClip, "Start");
-        animRunner.Play("Start");
+        try
+        {
+            animRunner.AddClip(startClip, "Start");
+            animRunner.Play("Start");
 
-        playButton.interactable = false;
-        howToPlayButton.interactable = false;
-        settingsButton.interactable = false;
-        quitGameButton.interactable = false;
+            playButton.interactable = false;
+            howToPlayButton.interactable = false;
+            settingsButton.interactable = false;
+            quitGameButton.interactable = false;
 
-        Debug.Log("Wait for animation...");
+            Debug.Log("Wait for animation...");
 
-        await UniTask.WaitUntil(() => !animRunner.isPlaying, cancellationToken: canvasCancellationSource.Token);
+            await UniTask.WaitUntil(() => !animRunner.isPlaying, cancellationToken: canvasCancellationSource.Token);
 
-        Debug.Log("Animation finished! Enable menu...");
+            Debug.Log("Animation finished! Enable menu...");
 
-        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-        playButton.interactable = true;
-        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-        howToPlayButton.interactable = true;
-        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-        settingsButton.interactable = true;
-        await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-        quitGameButton.interactable = true;
+            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+            playButton.interactable = true;
+            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+            howToPlayButton.interactable = true;
+            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+            settingsButton.interactable = true;
+            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
+            quitGameButton.interactable = true;
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("Main menu presentation cancelled");
+        }
     }
     
     private void Start()

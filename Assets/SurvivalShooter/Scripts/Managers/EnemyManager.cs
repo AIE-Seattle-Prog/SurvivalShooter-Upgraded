@@ -1,33 +1,80 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    public PlayerHealth playerHealth;       // Reference to the player's heatlh.
-    public GameObject enemy;                // The enemy prefab to be spawned.
-    public float spawnTime = 3f;            // How long between each spawn.
+    public GameObject[] enemies;                // The enemy prefab to be spawned.
+    public float minimumSpawnDelay = 1f;            // How long between each spawn.
+    public float minimumWaveDelay = 5f;
+    public int spawnWaveCount = 5;
     public Transform[] spawnPoints;         // An array of the spawn points this enemy can spawn from.
 
+    public bool IsCurrentlySpawning { get; private set; }
 
-    void Start ()
+    private CancellationTokenSource spawnerCancellationSource;
+
+    private void OnEnable()
     {
-        // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
-        InvokeRepeating ("Spawn", spawnTime, spawnTime);
+        spawnerCancellationSource = new CancellationTokenSource();
+
+        DoSpawnInterval(spawnerCancellationSource.Token);
     }
 
-
-    void Spawn ()
+    private void OnDisable()
     {
-        // If the player has no health left...
-        if(playerHealth.currentHealth <= 0f)
+        if (spawnerCancellationSource != null)
         {
-            // ... exit the function.
-            return;
+            spawnerCancellationSource.Cancel();
+            spawnerCancellationSource.Dispose();
         }
+    }
 
-        // Find a random index between zero and one less than the number of spawn points.
-        int spawnPointIndex = Random.Range (0, spawnPoints.Length);
+    private async void DoSpawnInterval(CancellationToken cancelToken)
+    {
+        try
+        {
+            while (!cancelToken.IsCancellationRequested)
+            {
+                DoSpawnWave(spawnWaveCount, cancelToken);
+                await UniTask.WaitUntil(() => !IsCurrentlySpawning, cancellationToken: cancelToken);
+                await UniTask.Delay(TimeSpan.FromSeconds(minimumSpawnDelay), cancellationToken: cancelToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("Spawn Interval cancelled.");
+        }
+    }
 
-        // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-        Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+    private async void DoSpawnWave(int spawnCount, CancellationToken cancelToken)
+    {
+        try
+        {
+            IsCurrentlySpawning = true;
+
+            // Find a random index between zero and one less than the number of spawn points.
+            int spawnPointIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
+
+            // Begin wave spawn at selected spawnpoint
+            for (int i = 0; i < spawnCount; ++i)
+            {
+                int enemyIndex = UnityEngine.Random.Range(0, enemies.Length);
+
+                // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
+                Instantiate(enemies[enemyIndex], spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+
+                await UniTask.Delay(TimeSpan.FromSeconds(minimumSpawnDelay), cancellationToken: cancelToken);
+            }
+
+            IsCurrentlySpawning = false;
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("Spawn Wave cancelled.");
+        }
     }
 }
