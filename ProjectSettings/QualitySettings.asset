@@ -228,5 +228,6 @@ QualitySettings:
     Standalone: 0
     Tizen: 0
     WebGL: 0
+    Windows Store Apps: 0
     iPhone: 0
     tvOS: 0
