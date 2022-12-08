@@ -6,10 +6,7 @@ using UnityEngine.Serialization;
 
 public class GameStateManager : MonoBehaviour
 {
-    public PlayerHealth playerHealth;       // Reference to the player's health.
-    
-    public Animator hudAnimator;       // Reference to the animator component.
-
+    [Header("Game State")]
     public float startDelay = 1.0f;
     public AudioClip inProgressChime;
 
@@ -34,14 +31,23 @@ public class GameStateManager : MonoBehaviour
     }
     public GameState CurrentGameState { get; private set; }
     
-    [SerializeField]
-    private EnemyManager[] enemyManagers;
-
     public UnityEvent<GameState> OnGameStateChanged; 
     
     public static GameStateManager Instance { get; private set; }
 
-    void ToGameState(GameState newState)
+    [Header("Sub-Managers")]
+    public PlayerHealth playerHealth;       // Reference to the player's health.    
+    [SerializeField]
+    private EnemyManager enemyManager;
+    public Animator hudAnimator;       // Reference to the animator component.
+
+    public void RestartLevel ()
+    {
+        // Reload the level that is currently loaded.
+        SceneManager.LoadScene (currentSceneBuildIndex);
+    }
+
+    private void ToGameState(GameState newState)
     {
         // exit current state - clean-up
         Debug.Log("Exiting game state: " + CurrentGameState);
@@ -53,8 +59,8 @@ public class GameStateManager : MonoBehaviour
             case GameState.Warmup:
                 break;
             case GameState.InProgress:
-                // turn on all of the spawners
-                foreach (var spawner in enemyManagers) { spawner.enabled = false; }
+                // turn off all of the spawners
+                enemyManager.enabled = false;
                 break;
             case GameState.End:
                 break;
@@ -75,12 +81,12 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.InProgress:
                 // turn on all of the spawners
-                foreach (var spawner in enemyManagers) { spawner.enabled = true; }
+                enemyManager.enabled = true;
                 transitionDelay = gameOverDelay;
                 if(inProgressChime != null) { gameStateAudioSource.PlayOneShot(inProgressChime); }
                 break;
             case GameState.End:
-                // ... tell the animator the game is over.
+                // tell the animator the game is over.
                 hudAnimator.SetTrigger ("GameOver");
                 transitionDelay = restartDelay;
                 if(gameoverChime != null) { gameStateAudioSource.PlayOneShot(gameoverChime); }
@@ -112,13 +118,13 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         currentSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
         ToGameState(GameState.Warmup);
     }
 
-    void Update ()
+    private void Update()
     {
         var nextState = CurrentGameState;
         switch (CurrentGameState)
@@ -142,7 +148,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.End:
                 transitionDelay -= Time.deltaTime;
-                if(transitionDelay <= 0.0f)
+                if (transitionDelay <= 0.0f)
                 {
                     RestartLevel();
                 }
@@ -157,10 +163,5 @@ public class GameStateManager : MonoBehaviour
             ToGameState(nextState);
         }
     }
-    
-    public void RestartLevel ()
-    {
-        // Reload the level that is currently loaded.
-        SceneManager.LoadScene (currentSceneBuildIndex);
-    }
+
 }

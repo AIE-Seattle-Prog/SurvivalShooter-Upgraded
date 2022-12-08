@@ -21,7 +21,7 @@ public class EnemyManager : MonoBehaviour
     {
         spawnerCancellationSource = new CancellationTokenSource();
 
-        DoSpawnInterval(spawnerCancellationSource.Token);
+        DoSpawnWaveInterval(spawnerCancellationSource.Token);
     }
 
     private void OnDisable()
@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private async void DoSpawnInterval(CancellationToken cancelToken)
+    private async void DoSpawnWaveInterval(CancellationToken cancelToken)
     {
         try
         {
@@ -41,7 +41,7 @@ public class EnemyManager : MonoBehaviour
             {
                 DoSpawnWave(spawnWaveCount, cancelToken);
                 await UniTask.WaitUntil(() => !IsCurrentlySpawning, cancellationToken: cancelToken);
-                await UniTask.Delay(TimeSpan.FromSeconds(minimumSpawnDelay), cancellationToken: cancelToken);
+                await UniTask.Delay(TimeSpan.FromSeconds(minimumWaveDelay), cancellationToken: cancelToken);
             }
         }
         catch (OperationCanceledException)
@@ -55,6 +55,7 @@ public class EnemyManager : MonoBehaviour
         try
         {
             IsCurrentlySpawning = true;
+            Debug.Log("New wave is spawning...");
 
             // Find a random index between zero and one less than the number of spawn points.
             int spawnPointIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
@@ -71,6 +72,7 @@ public class EnemyManager : MonoBehaviour
             }
 
             IsCurrentlySpawning = false;
+            Debug.Log("Spawn wave completed.");
         }
         catch (OperationCanceledException)
         {
