@@ -167,6 +167,9 @@ MonoBehaviour:
   <OnEnemyCountChanged>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
+  <OnEnemyQuotaMet>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &14871712
 Transform:
   m_ObjectHideFlags: 0
@@ -5541,6 +5544,7 @@ MonoBehaviour:
   OnGameStateChanged:
     m_PersistentCalls:
       m_Calls: []
+  enemiesPerRound: 30
   <playerHealth>k__BackingField: {fileID: 176715526}
   <enemyManager>k__BackingField: {fileID: 14871711}
   <hudAnimator>k__BackingField: {fileID: 1139190137}
