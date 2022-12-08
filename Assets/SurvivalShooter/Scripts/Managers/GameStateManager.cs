@@ -35,6 +35,9 @@ public class GameStateManager : MonoBehaviour
     
     public static GameStateManager Instance { get; private set; }
 
+    [Header("Game Settings")]
+    public int enemiesPerRound = 30;
+
     [field: Header("Sub-Managers")]
     [field: SerializeField]
     public PlayerHealth playerHealth { get; private set; }       // Reference to the player's health.    
@@ -83,6 +86,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.InProgress:
                 // turn on all of the spawners
+                enemyManager.SetNewEnemyQuota(enemiesPerRound);
                 enemyManager.enabled = true;
                 transitionDelay = gameOverDelay;
                 if(inProgressChime != null) { gameStateAudioSource.PlayOneShot(inProgressChime); }

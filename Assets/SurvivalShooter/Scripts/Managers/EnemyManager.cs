@@ -33,11 +33,25 @@ public class EnemyManager : MonoBehaviour
     [field: SerializeField]
     public UnityEvent<int> OnEnemyCountChanged { get; private set; }
 
+    public int EnemyQuota { get; private set; }
+    private int enemyQuotaProgress = 0;
+    // TODO: figure this out from enemyCount
+    private int enemiesKilled;
+    public int EnemiesRemaining => EnemyQuota - enemiesKilled;
+    public void SetNewEnemyQuota(int newQuota)
+    {
+        EnemyQuota = newQuota;
+        enemyQuotaProgress = 0;
+        enemiesKilled = 0;
+    }
+
     private void OnEnable()
     {
         spawnerCancellationSource = new CancellationTokenSource();
 
         DoSpawnWaveInterval(spawnerCancellationSource.Token);
+
+        // TODO: allow resume quota spawning, if not yet met after enabling
     }
 
     private void OnDisable()
@@ -55,8 +69,16 @@ public class EnemyManager : MonoBehaviour
         {
             while (!cancelToken.IsCancellationRequested)
             {
-                DoSpawnWave(spawnWaveCount, cancelToken);
+                int spawnCountThisWave = Mathf.Min(EnemyQuota - enemyQuotaProgress, spawnWaveCount);
+                DoSpawnWave(spawnCountThisWave, cancelToken);
                 await UniTask.WaitUntil(() => !IsCurrentlySpawning, cancellationToken: cancelToken);
+
+                if(enemyQuotaProgress >= EnemyQuota)
+                {
+                    Debug.Log("Quota met, ending spawn wave complete.");
+                    return;
+                }
+
                 await UniTask.Delay(TimeSpan.FromSeconds(minimumWaveDelay), cancellationToken: cancelToken);
             }
         }
@@ -100,6 +122,7 @@ public class EnemyManager : MonoBehaviour
     {
         var babyEnemy = Instantiate(enemyPrefab, position, rotation);
         ++EnemyCount;
+        ++enemyQuotaProgress;
 
         EnemyHealth enemyHealth = babyEnemy.GetComponent<EnemyHealth>();
         enemyHealth.OnDeath.AddListener(HandleEnemyDeath);
@@ -109,6 +132,8 @@ public class EnemyManager : MonoBehaviour
 
     private void HandleEnemyDeath()
     {
+        Debug.Log("Enemy death!");
+        ++enemiesKilled;
         --EnemyCount;
     }
 }

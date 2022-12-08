@@ -21,6 +21,6 @@ public class PlayerHUDManager : MonoBehaviour
 
     private void HandleEnemyCountUpdated(int arg0)
     {
-        enemyCount.text = arg0.ToString(formatter);
+        enemyCount.text = GameStateManager.Instance.enemyManager.EnemiesRemaining.ToString(formatter);
     }
 }
