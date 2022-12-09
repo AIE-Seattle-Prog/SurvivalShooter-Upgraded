@@ -6,22 +6,32 @@ using UnityEngine;
 public class EnemyRoundConfig : ScriptableObject
 {
     public int numberOfEnemies;
-    public int MaxRollValue => maxBreakpointValue;
-    
+
+    [System.Serializable]
+    public struct EnemyChance
+    {
+        public GameObject enemyPrefab;
+        public int weight;
+    }
+
+    [System.Serializable]
+    public struct EnemyPlan
+    {
+        public GameObject enemy;
+        public int position;
+    }
+
     public List<EnemyChance> enemyChances = new List<EnemyChance>();
+    public List<EnemyPlan> enemyOverrides = new List<EnemyPlan>();
+
+    public int MaxRollValue => maxBreakpointValue;
 
     private List<EnemyChance> enemyBreakpoints = new List<EnemyChance>();
     private int maxBreakpointValue = -1;
 
-
-    public GameObject GetNextEnemy()
+    public GameObject GetRandomEnemy()
     {
-        return GetNextEnemy(Random.Range(0, maxBreakpointValue));
-    }
-
-    public GameObject GetNextEnemy(int roll)
-    {
-        int actualRoll = roll % maxBreakpointValue;
+        int actualRoll = Random.Range(0, maxBreakpointValue);
 
         foreach(var bp in enemyBreakpoints)
         {
@@ -32,6 +42,19 @@ public class EnemyRoundConfig : ScriptableObject
         }
 
         return null;
+    }
+
+    public bool GetPlannedEnemy(int spawnIndex, out GameObject enemyPrefab)
+    {
+        enemyPrefab = null;
+
+        foreach (var eOverride in enemyOverrides)
+        {
+            if(eOverride.position == spawnIndex) { enemyPrefab = eOverride.enemy; return true; }
+            if(eOverride.position > spawnIndex) { return false; }
+        }
+
+        return false;
     }
 
     private void BuildEnemyBreakpoints ()
@@ -51,15 +74,23 @@ public class EnemyRoundConfig : ScriptableObject
         enemyBreakpoints = breakpoints;
     }
 
+    /*
+    private void BuildEnemyPlan()
+    {
+        List<EnemyPlan> enemySequence = new List<EnemyPlan>();
+
+        // sort by position in spawn sequence
+        enemyOverrides.Sort((a, b) => a.position.CompareTo(b.position));
+    }
+    */
+
     private void Awake()
     {
         BuildEnemyBreakpoints();
     }
-}
 
-[System.Serializable]
-public struct EnemyChance
-{
-    public GameObject enemyPrefab;
-    public int weight;
+    private void OnValidate()
+    {
+        // TODO: ensure overrides are sorted
+    }
 }

@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour
 {
     public float minimumSpawnDelay = 1f;            // How long between each spawn.
     public float minimumWaveDelay = 5f;
-    public int spawnWaveCount = 5;
+    public int spawnsPerWave = 5;
     public Transform[] spawnPoints;         // An array of the spawn points this enemy can spawn from.
 
     public bool IsCurrentlySpawning { get; private set; }
@@ -69,7 +69,7 @@ public class EnemyManager : MonoBehaviour
                     await UniTask.Delay(TimeSpan.FromSeconds(minimumWaveDelay), cancellationToken: cancelToken);
                 }
 
-                int spawnCountThisWave = Mathf.Min(EnemyQuota - enemySpawnCount, spawnWaveCount);
+                int spawnCountThisWave = Mathf.Min(EnemyQuota - enemySpawnCount, spawnsPerWave);
                 bool waveSpawnSuccess = await DoSpawnWave(spawnCountThisWave, cancelToken);
                 isFirstWave = false;
             }
@@ -97,8 +97,14 @@ public class EnemyManager : MonoBehaviour
             // Begin wave spawn at selected spawnpoint
             for (int i = 0; i < spawnCount; ++i)
             {
+                GameObject nextEnemyPrefab = null;
+                if(!spawnerConfig.GetPlannedEnemy(enemySpawnCount, out nextEnemyPrefab))
+                {
+                    nextEnemyPrefab = spawnerConfig.GetRandomEnemy();
+                }
+
                 // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-                SpawnEnemy(spawnerConfig.GetNextEnemy(), spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+                SpawnEnemy(nextEnemyPrefab, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
 
                 await UniTask.Delay(TimeSpan.FromSeconds(minimumSpawnDelay), cancellationToken: cancelToken);
             }

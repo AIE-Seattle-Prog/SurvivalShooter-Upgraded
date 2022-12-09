@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minimumSpawnDelay: 1
-  minimumWaveDelay: 5
-  spawnWaveCount: 5
+  minimumWaveDelay: 3
+  spawnsPerWave: 5
   spawnPoints:
   - {fileID: 345275349}
   - {fileID: 1725468539}
