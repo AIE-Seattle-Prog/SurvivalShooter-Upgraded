@@ -9,7 +9,6 @@ using UnityEngine.Events;
 
 public class EnemyManager : MonoBehaviour
 {
-    public GameObject[] enemies;                // The enemy prefab to be spawned.
     public float minimumSpawnDelay = 1f;            // How long between each spawn.
     public float minimumWaveDelay = 5f;
     public int spawnWaveCount = 5;
@@ -38,38 +37,23 @@ public class EnemyManager : MonoBehaviour
     [field: SerializeField]
     public UnityEvent<int> OnEnemyQuotaMet { get; private set; }
 
-    public int EnemyQuota { get; private set; }
+    public int EnemyQuota => spawnerConfig.numberOfEnemies;
     public bool IsEnemyQuotaMet => enemySpawnCount >= EnemyQuota;
+    private EnemyRoundConfig spawnerConfig;
     
     // TODO: figure this out from enemyCount
     private int enemiesKilled;
     public int EnemiesRemaining => EnemyQuota - enemiesKilled;
 
-    public void SetNewEnemyQuota(int newQuota)
+    public void SetSpawnerConfig(EnemyRoundConfig config)
     {
-        EnemyQuota = newQuota;
+        spawnerConfig = config;
+    }
+
+    public void ResetCounters()
+    {
         enemySpawnCount = 0;
         enemiesKilled = 0;
-    }
-
-    private async void OnEnable()
-    {
-        spawnerCancellationSource = new CancellationTokenSource();
-
-        bool result = await DoSpawnWaveInterval(spawnerCancellationSource.Token);
-        if (result)
-        {
-            OnEnemyQuotaMet.Invoke(EnemyQuota);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (spawnerCancellationSource != null)
-        {
-            spawnerCancellationSource.Cancel();
-            spawnerCancellationSource.Dispose();
-        }
     }
 
     private async Task<bool> DoSpawnWaveInterval(CancellationToken cancelToken)
@@ -113,10 +97,8 @@ public class EnemyManager : MonoBehaviour
             // Begin wave spawn at selected spawnpoint
             for (int i = 0; i < spawnCount; ++i)
             {
-                int enemyIndex = UnityEngine.Random.Range(0, enemies.Length);
-
                 // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-                SpawnEnemy(enemies[enemyIndex], spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+                SpawnEnemy(spawnerConfig.GetNextEnemy(), spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
 
                 await UniTask.Delay(TimeSpan.FromSeconds(minimumSpawnDelay), cancellationToken: cancelToken);
             }
@@ -148,5 +130,25 @@ public class EnemyManager : MonoBehaviour
     {
         ++enemiesKilled;
         --EnemyCount;
+    }
+
+    private async void OnEnable()
+    {
+        spawnerCancellationSource = new CancellationTokenSource();
+
+        bool result = await DoSpawnWaveInterval(spawnerCancellationSource.Token);
+        if (result)
+        {
+            OnEnemyQuotaMet.Invoke(EnemyQuota);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (spawnerCancellationSource != null)
+        {
+            spawnerCancellationSource.Cancel();
+            spawnerCancellationSource.Dispose();
+        }
     }
 }

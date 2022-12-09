@@ -37,6 +37,8 @@ public class GameStateManager : MonoBehaviour
 
     [Header("Game Settings")]
     public int enemiesPerRound = 30;
+    public EnemyRoundConfig[] rounds;
+    private int currentRound = -1;
 
     [field: Header("Sub-Managers")]
     [field: SerializeField]
@@ -85,10 +87,13 @@ public class GameStateManager : MonoBehaviour
                 transitionDelay = startDelay;
                 break;
             case GameState.InProgress:
-                // turn on all of the spawners
-                enemyManager.SetNewEnemyQuota(enemiesPerRound);
+                ++currentRound;
+                enemyManager.SetSpawnerConfig(rounds[currentRound]);
+                enemyManager.ResetCounters();
                 enemyManager.enabled = true;
+
                 transitionDelay = gameOverDelay;
+                Debug.Log($"Round {currentRound + 1}, starting!");
                 if(inProgressChime != null) { gameStateAudioSource.PlayOneShot(inProgressChime); }
                 break;
             case GameState.End:
@@ -154,7 +159,14 @@ public class GameStateManager : MonoBehaviour
                 else if (enemyManager.IsEnemyQuotaMet && enemyManager.EnemiesRemaining <= 0)
                 {
                     Debug.Log("Wave Cleared!");
-                    nextState = GameState.Warmup;
+                    if (currentRound + 1 < rounds.Length)
+                    {
+                        nextState = GameState.Warmup;
+                    }
+                    else
+                    {
+                        nextState = GameState.End;
+                    }
                 }
                 break;
             case GameState.End:
