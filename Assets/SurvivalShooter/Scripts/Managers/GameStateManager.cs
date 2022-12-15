@@ -158,14 +158,18 @@ public class GameStateManager : MonoBehaviour
                 }
                 else if (enemyManager.IsEnemyQuotaMet && enemyManager.EnemiesRemaining <= 0)
                 {
-                    Debug.Log("Wave Cleared!");
                     if (currentRound + 1 < rounds.Length)
                     {
+                        Debug.Log("Taking a break before the next wave.");
                         nextState = GameState.Warmup;
                     }
                     else
                     {
-                        nextState = GameState.End;
+                        transitionDelay -= Time.deltaTime;
+                        if (transitionDelay <= 0.0f)
+                        {
+                            nextState = GameState.End;
+                        }
                     }
                 }
                 break;
