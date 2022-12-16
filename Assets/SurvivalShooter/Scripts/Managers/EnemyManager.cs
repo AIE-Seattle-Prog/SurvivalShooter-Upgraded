@@ -12,6 +12,7 @@ public class EnemyManager : MonoBehaviour
     public float minimumSpawnDelay = 1f;            // How long between each spawn.
     public float minimumWaveDelay = 5f;
     public int spawnsPerWave = 5;
+    public int maxActiveEnemies = 30;
     public Transform[] spawnPoints;         // An array of the spawn points this enemy can spawn from.
 
     public bool IsCurrentlySpawning { get; private set; }
@@ -101,6 +102,15 @@ public class EnemyManager : MonoBehaviour
                 if(!spawnerConfig.GetPlannedEnemy(enemySpawnCount, out nextEnemyPrefab))
                 {
                     nextEnemyPrefab = spawnerConfig.GetRandomEnemy();
+                }
+
+                // do we need to wait for room for another enemy
+                while (maxActiveEnemies != -1 &&       // no limit
+                    EnemyCount >= maxActiveEnemies)  // configured limit
+                {
+                    Debug.Log("Spawn blocked by enemy limit. Waiting one spawn cycle...");
+                    // TODO: find a better way to wait to spawn the next enemy
+                    await UniTask.Delay(TimeSpan.FromSeconds(minimumSpawnDelay), cancellationToken: cancelToken);
                 }
 
                 // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
