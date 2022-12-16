@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80b8058dcce2c324788c3716f6de9fa1, type: 3}
-  m_Name: Normal1
+  m_Name: SkeledanOnly
   m_EditorClassIdentifier: 
-  numberOfEnemies: 20
+  numberOfEnemies: 30
   enemyChances:
-  - enemyPrefab: {fileID: 100000, guid: ea3c2728ef33e3a4d99527a86cda6465, type: 3}
-    weight: 1
-  - enemyPrefab: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
-    weight: 1
+  - enemyPrefab: {fileID: 8174756258586021215, guid: aa582d2bcb582a04ea0568e8f8222b90,
+      type: 3}
+    weight: 5
   enemyOverrides: []

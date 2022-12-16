@@ -5546,6 +5546,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 63634ef629fd50a40a70965b812c82bb, type: 2}
   - {fileID: 11400000, guid: a0650b9ce53c13a48b93fbb850f74648, type: 2}
   - {fileID: 11400000, guid: 745a8ea0ef114fe48a175f44689521f6, type: 2}
+  - {fileID: 11400000, guid: a0a19b3a3060da04d95733fc96b08045, type: 2}
+  - {fileID: 11400000, guid: 9e8b4d6e8ed849a4dbb0da3f378d5597, type: 2}
   <playerHealth>k__BackingField: {fileID: 176715526}
   <enemyManager>k__BackingField: {fileID: 14871711}
   <hudAnimator>k__BackingField: {fileID: 1139190137}

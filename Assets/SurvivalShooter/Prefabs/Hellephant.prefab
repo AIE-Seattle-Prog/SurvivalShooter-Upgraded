@@ -10058,6 +10058,11 @@ MonoBehaviour:
   scoreValue: 10
   deathClip: {fileID: 8300000, guid: 8c615fd0429f34edf85539d70279360d, type: 3}
   knockbackImpulse: 0.2
+  hitParticles: {fileID: 19897060}
+  deathParticles: {fileID: 19869728}
+  <OnDeath>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &11402556
 MonoBehaviour:
   m_ObjectHideFlags: 0
