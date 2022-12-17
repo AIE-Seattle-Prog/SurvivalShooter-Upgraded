@@ -38,7 +38,7 @@ public class GameStateManager : MonoBehaviour
     [Header("Game Settings")]
     public int enemiesPerRound = 30;
     public EnemyRoundConfig[] rounds;
-    private int currentRound = -1;
+    public int CurrentRound { get; private set; } = -1;
 
     [field: Header("Sub-Managers")]
     [field: SerializeField]
@@ -87,13 +87,13 @@ public class GameStateManager : MonoBehaviour
                 transitionDelay = startDelay;
                 break;
             case GameState.InProgress:
-                ++currentRound;
-                enemyManager.SetSpawnerConfig(rounds[currentRound]);
-                enemyManager.ResetCounters();
+                ++CurrentRound;
+                enemyManager.SetSpawnerConfig(rounds[CurrentRound]);
+                enemyManager.ResetSpawnCounts();
                 enemyManager.enabled = true;
 
                 transitionDelay = gameOverDelay;
-                Debug.Log($"Round {currentRound + 1}, starting!");
+                Debug.Log($"Round {CurrentRound + 1}, starting!");
                 if(inProgressChime != null) { gameStateAudioSource.PlayOneShot(inProgressChime); }
                 break;
             case GameState.End:
@@ -158,7 +158,7 @@ public class GameStateManager : MonoBehaviour
                 }
                 else if (enemyManager.IsEnemyQuotaMet && enemyManager.EnemiesRemaining <= 0)
                 {
-                    if (currentRound + 1 < rounds.Length)
+                    if (CurrentRound + 1 < rounds.Length)
                     {
                         Debug.Log("Taking a break before the next wave.");
                         nextState = GameState.Warmup;

@@ -20,7 +20,7 @@ public class EnemyHealth : MonoBehaviour
     bool isSinking;                             // Whether the enemy has started sinking through the floor.
 
     [field: SerializeField]
-    public UnityEvent OnDeath { get; private set; }
+    public UnityEvent<EnemyHealth> OnDeath { get; private set; }
 
     void Awake ()
     {
@@ -111,7 +111,7 @@ public class EnemyHealth : MonoBehaviour
         deathParticles.Play();
 
         // Notify death event
-        OnDeath.Invoke();
+        OnDeath.Invoke(this);
     }
 
 

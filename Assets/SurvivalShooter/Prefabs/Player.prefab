@@ -224,6 +224,7 @@ MonoBehaviour:
   gunAudio: {fileID: 7028167949577036599}
   gunLight: {fileID: 6243174906399419895}
   faceLight: {fileID: 10800002}
+  isFiring: 0
 --- !u!1 &100008
 GameObject:
   m_ObjectHideFlags: 0
@@ -5537,6 +5538,10 @@ PrefabInstance:
     - target: {fileID: 100078, guid: f1d84cc28597f5641a3d9cbc4df7e306, type: 3}
       propertyPath: m_Name
       value: Player Art
+      objectReference: {fileID: 0}
+    - target: {fileID: 100078, guid: f1d84cc28597f5641a3d9cbc4df7e306, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400080, guid: f1d84cc28597f5641a3d9cbc4df7e306, type: 3}
       propertyPath: m_RootOrder

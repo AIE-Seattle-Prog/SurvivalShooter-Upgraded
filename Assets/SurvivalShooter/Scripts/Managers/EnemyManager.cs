@@ -9,6 +9,7 @@ using UnityEngine.Events;
 
 public class EnemyManager : MonoBehaviour
 {
+    public float initialSpawnDelay = 1f;
     public float minimumSpawnDelay = 1f;            // How long between each spawn.
     public float minimumWaveDelay = 5f;
     public int spawnsPerWave = 5;
@@ -19,6 +20,7 @@ public class EnemyManager : MonoBehaviour
 
     private CancellationTokenSource spawnerCancellationSource;
 
+    // TODO: replace this with the 'enemiesSpawned' hashset
     private int enemyCount;
     public int EnemyCount
     {
@@ -44,6 +46,7 @@ public class EnemyManager : MonoBehaviour
     
     // TODO: figure this out from enemyCount
     private int enemiesKilled;
+    private HashSet<EnemyHealth> enemiesSpawned;
     public int EnemiesRemaining => EnemyQuota - enemiesKilled;
 
     public void SetSpawnerConfig(EnemyRoundConfig config)
@@ -51,10 +54,11 @@ public class EnemyManager : MonoBehaviour
         spawnerConfig = config;
     }
 
-    public void ResetCounters()
+    public void ResetSpawnCounts()
     {
         enemySpawnCount = 0;
         enemiesKilled = 0;
+        enemiesSpawned.Clear();
     }
 
     private async Task<bool> DoSpawnWaveInterval(CancellationToken cancelToken)
@@ -65,7 +69,11 @@ public class EnemyManager : MonoBehaviour
 
             while (enemySpawnCount < EnemyQuota)
             {
-                if (!isFirstWave)
+                if (isFirstWave)
+                {
+                    await UniTask.Delay(TimeSpan.FromSeconds(initialSpawnDelay), cancellationToken: cancelToken);
+                }
+                else
                 {
                     await UniTask.Delay(TimeSpan.FromSeconds(minimumWaveDelay), cancellationToken: cancelToken);
                 }
@@ -137,20 +145,44 @@ public class EnemyManager : MonoBehaviour
         ++enemySpawnCount;
 
         EnemyHealth enemyHealth = babyEnemy.GetComponent<EnemyHealth>();
+        enemiesSpawned.Add(enemyHealth);
         enemyHealth.OnDeath.AddListener(HandleEnemyDeath);
 
         return enemyHealth;
     }
 
-    private void HandleEnemyDeath()
+    private void HandleEnemyDeath(EnemyHealth enemy)
     {
         ++enemiesKilled;
         --EnemyCount;
+        enemiesSpawned.Remove(enemy);
+    }
+
+    private void RefreshCancellationTokenSource()
+    {
+        if(spawnerCancellationSource != null)
+        {
+            spawnerCancellationSource.Cancel();
+            spawnerCancellationSource.Dispose();
+            spawnerCancellationSource = null;
+        }
+
+        spawnerCancellationSource = new CancellationTokenSource();
+    }
+
+    private void Awake()
+    {
+        // HACK: pre-allocate hashset w/ capacity requires creating a dummy list w/ a given capacity
+        //       
+        //       capacity will be retained after a clear
+        //       https://stackoverflow.com/questions/6771917/why-cant-i-preallocate-a-hashsett
+        enemiesSpawned = new HashSet<EnemyHealth>(new List<EnemyHealth>(maxActiveEnemies));
+        enemiesSpawned.Clear();
     }
 
     private async void OnEnable()
     {
-        spawnerCancellationSource = new CancellationTokenSource();
+        RefreshCancellationTokenSource();
 
         bool result = await DoSpawnWaveInterval(spawnerCancellationSource.Token);
         if (result)
@@ -165,6 +197,7 @@ public class EnemyManager : MonoBehaviour
         {
             spawnerCancellationSource.Cancel();
             spawnerCancellationSource.Dispose();
+            spawnerCancellationSource = null;
         }
     }
 }
