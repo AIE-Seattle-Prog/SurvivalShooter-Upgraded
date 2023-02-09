@@ -4536,7 +4536,7 @@ MonoBehaviour:
   input: {fileID: 1435590724}
   floorMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   camRayLength: 100
 --- !u!114 &1435590724
 MonoBehaviour:
@@ -4601,6 +4601,12 @@ MonoBehaviour:
   m_DefaultActionMap: Character
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!136 &1435590725 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 13600000, guid: 4e5a0d387dc27394b81600988ad0216f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7593855359827474102}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1561488980
 GameObject:
   m_ObjectHideFlags: 0
@@ -5718,7 +5724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c9e0011c2ed97428a4efc03b455359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDelay: 3
+  startDelay: 300
   inProgressChime: {fileID: 8300000, guid: 343d93dfaad634843b12ff8e94bedbf8, type: 3}
   gameOverDelay: 1
   gameoverChime: {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}
@@ -6246,6 +6252,18 @@ PrefabInstance:
       propertyPath: input
       value: 
       objectReference: {fileID: 1435590724}
+    - target: {fileID: 176715523, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
+      propertyPath: playerCollider
+      value: 
+      objectReference: {fileID: 1435590725}
+    - target: {fileID: 176715523, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 768
+      objectReference: {fileID: 0}
+    - target: {fileID: 176715523, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
+      propertyPath: groundCheckDistance
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 176715526, guid: 4e5a0d387dc27394b81600988ad0216f, type: 3}
       propertyPath: damageImage
       value: 
@@ -6259,6 +6277,11 @@ PrefabInstance:
       propertyPath: input
       value: 
       objectReference: {fileID: 1435590724}
+    - target: {fileID: 3731580488801564928, guid: 4e5a0d387dc27394b81600988ad0216f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3731580488801592546, guid: 4e5a0d387dc27394b81600988ad0216f,
         type: 3}
       propertyPath: m_LocalPosition.x
