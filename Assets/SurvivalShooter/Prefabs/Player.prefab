@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 176715526}
   - component: {fileID: 176715523}
   - component: {fileID: 2025858298516265474}
+  - component: {fileID: 5780052223001709026}
+  - component: {fileID: 7054637838359711782}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -204,10 +206,10 @@ MonoBehaviour:
   airSpeed: 1
   anim: {fileID: 3731580488794163854}
   playerRigidbody: {fileID: 5400000}
-  playerCollider: {fileID: 0}
+  playerCollider: {fileID: 13600000}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 768
   bonusGroundCheckDistance: 0.05
   maxGroundAngle: 45
 --- !u!114 &2025858298516265474
@@ -232,6 +234,89 @@ MonoBehaviour:
   gunLight: {fileID: 6243174906399419895}
   faceLight: {fileID: 10800002}
   isFiring: 0
+--- !u!114 &5780052223001709026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bc2a4db761cc54ab82db0b269cb3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 176715526}
+  movement: {fileID: 176715523}
+  shoot: {fileID: 2025858298516265474}
+  input: {fileID: 0}
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 768
+  camRayLength: 100
+--- !u!114 &7054637838359711782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 693d101d79bd2ed4284162409f924921,
+    type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 176715523}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: HandleMoveHorizontal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f726d8c1-3cc0-4b3d-994c-ef8f43e51819
+    m_ActionName: Character/MoveHorizontal[/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 176715523}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: HandleMoveVertical
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4da42bf9-3a72-46da-9242-64118c9b379a
+    m_ActionName: Character/MoveVertical[/Keyboard/s,/Keyboard/w]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Character
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &100008
 GameObject:
   m_ObjectHideFlags: 0
