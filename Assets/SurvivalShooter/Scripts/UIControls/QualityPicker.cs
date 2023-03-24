@@ -6,36 +6,15 @@ using TMPro;
 
 public class QualityPicker : MonoBehaviour
 {
-    [SerializeField]
-    private TMP_Dropdown dropdown;
-    [SerializeField]
-    private QualityDescriptor[] qualityOptions;
+    public List<Toggle> toggles = new List<Toggle>();
 
-    [System.Serializable]
-    public struct QualityDescriptor
+    private void OnEnable()
     {
-        public int qualityIndex;
-        public string name;
-    }
-
-    private void Start()
-    {
-        dropdown.ClearOptions();
-        List<string> tempOptions = new();
-        foreach (var desc in qualityOptions)
-        {
-            tempOptions.Add(desc.name);
-        }
-        dropdown.AddOptions(tempOptions);
-
-        // set current level
-        dropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
+        toggles[QualitySettings.GetQualityLevel()].SetIsOnWithoutNotify(true);
     }
 
     public void SetQualitySetting(int index)
     {
-        int realIndex = qualityOptions[index].qualityIndex;
-        QualitySettings.SetQualityLevel(realIndex);
-        dropdown.SetValueWithoutNotify(realIndex);
+        QualitySettings.SetQualityLevel(index); 
     }
 }
