@@ -36,16 +36,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        input.currentActionMap["Fire"].performed -= HandleFire;
-        input.currentActionMap["Fire"].canceled -= HandleFire;
+        if (gameObject.scene.isLoaded)
+        {
+            input.currentActionMap["Fire"].performed -= HandleFire;
+            input.currentActionMap["Fire"].canceled -= HandleFire;
 
-        input.currentActionMap["MoveHorizontal"].performed -= HandleMoveHorizontal;
-        input.currentActionMap["MoveHorizontal"].canceled -= HandleMoveHorizontal;
+            input.currentActionMap["MoveHorizontal"].performed -= HandleMoveHorizontal;
+            input.currentActionMap["MoveHorizontal"].canceled -= HandleMoveHorizontal;
 
-        input.currentActionMap["MoveVertical"].performed -= HandleMoveVertical;
-        input.currentActionMap["MoveVertical"].canceled -= HandleMoveVertical;
+            input.currentActionMap["MoveVertical"].performed -= HandleMoveVertical;
+            input.currentActionMap["MoveVertical"].canceled -= HandleMoveVertical;
 
-        input.currentActionMap["Pause"].performed -= HandlePause;
+            input.currentActionMap["Pause"].performed -= HandlePause;
+        }
     }
 
     private void Update()
@@ -97,14 +100,6 @@ public class PlayerController : MonoBehaviour
 
         // Pass to movement component
         movement.SetMoveRotation(newRotation);
-
-        // Vector3 debugHitPoint = hitPoint + Vector3.up * 0.3f;
-
-        // Debug.DrawRay(shoot.gunTipTransform.position, shoot.gunTipTransform.forward * 10.0f, Color.yellow);
-
-        // Debug.DrawRay(debugHitPoint, Vector3.up * 3.0f, Color.red);
-        // Debug.DrawRay(debugHitPoint - Vector3.right * 0.1f, Vector3.right * 0.2f, Color.red);
-        // Debug.DrawRay(debugHitPoint - Vector3.forward * 0.1f, Vector3.forward * 0.2f, Color.red);
     }
 
     private void HandlePause(CallbackContext obj)
