@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerController : MonoBehaviour
@@ -22,6 +23,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("Using current control scheme: " + input.currentControlScheme);
+        Debug.Log("Using current action map: " + input.currentActionMap);
+
         input.currentActionMap["Fire"].performed += HandleFire;
         input.currentActionMap["Fire"].canceled += HandleFire;
 
@@ -32,6 +36,9 @@ public class PlayerController : MonoBehaviour
         input.currentActionMap["MoveVertical"].canceled += HandleMoveVertical;
 
         input.currentActionMap["Pause"].performed += HandlePause;
+
+        input.currentActionMap["Aim"].performed += HandleAim;
+        input.currentActionMap["Turn"].performed += HandleTurn;
     }
 
     private void OnDisable()
@@ -48,10 +55,39 @@ public class PlayerController : MonoBehaviour
             input.currentActionMap["MoveVertical"].canceled -= HandleMoveVertical;
 
             input.currentActionMap["Pause"].performed -= HandlePause;
+
+            input.currentActionMap["Aim"].performed -= HandleAim;
+            input.currentActionMap["Turn"].performed -= HandleTurn;
         }
     }
 
     private void Update()
+    {
+
+    }
+
+    private void HandlePause(CallbackContext obj)
+    {
+        PauseManager.Instance.SetPause(!PauseManager.Instance.IsPaused);
+    }
+
+    private void HandleFire(CallbackContext callbackContext)
+    {
+        if (callbackContext.phase == InputActionPhase.Performed) { shoot.isFiring = true; }
+        else if (callbackContext.phase == InputActionPhase.Canceled) { shoot.isFiring = false; }
+    }
+
+    private void HandleMoveHorizontal(CallbackContext callbackContext)
+    {
+        movement.SetMoveHorizontal(callbackContext.ReadValue<float>());
+    }
+
+    public void HandleMoveVertical(CallbackContext callbackContext)
+    {
+        movement.SetMoveForward(callbackContext.ReadValue<float>());
+    }
+
+    private void HandleAim(CallbackContext callbackContext)
     {
         //
         // MOUSE LOGIC for AIMING
@@ -74,7 +110,7 @@ public class PlayerController : MonoBehaviour
             Plane groundPlane = new Plane(Vector3.up, 0.0f);
 
             // NOTE: 'enter' is the distance that the ray travelled to hit the plane
-            if(groundPlane.Raycast(camRay, out var enter))
+            if (groundPlane.Raycast(camRay, out var enter))
             {
                 // pass 'enter' to 'GetPoint' on Ray to determine hit point
                 hitPoint = camRay.GetPoint(enter);
@@ -93,7 +129,7 @@ public class PlayerController : MonoBehaviour
         float turnOffset = Mathf.Rad2Deg * Mathf.Asin(aimOffset / distToShoot);
 
         // fallback to excluding offset if invalid
-        if(float.IsNaN(turnOffset)) { turnOffset = 0f; }
+        if (float.IsNaN(turnOffset)) { turnOffset = 0f; }
 
         // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
         Quaternion newRotation = Quaternion.LookRotation(playerToMouse) * Quaternion.AngleAxis(-turnOffset, Vector3.up);
@@ -102,25 +138,21 @@ public class PlayerController : MonoBehaviour
         movement.SetMoveRotation(newRotation);
     }
 
-    private void HandlePause(CallbackContext obj)
+    private void HandleTurn(CallbackContext obj)
     {
-        PauseManager.Instance.SetPause(!PauseManager.Instance.IsPaused);
-    }
+        Vector2 raw = obj.ReadValue<Vector2>();
 
-    private void HandleFire(CallbackContext callbackContext)
-    {
-        if (callbackContext.phase == InputActionPhase.Performed) { shoot.isFiring = true; }
-        else if (callbackContext.phase == InputActionPhase.Canceled) { shoot.isFiring = false; }
-    }
+        Vector3 rawWorld = new Vector3(raw.x, 0.0f, raw.y);
 
-    private void HandleMoveHorizontal(CallbackContext callbackContext)
-    {
-        movement.SetMoveHorizontal(callbackContext.ReadValue<float>());
-    }
+        // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
+        Quaternion newRotation = Quaternion.LookRotation(rawWorld);
 
-    public void HandleMoveVertical(CallbackContext callbackContext)
-    {
-        movement.SetMoveForward(callbackContext.ReadValue<float>());
+        if (rawWorld.sqrMagnitude > 0.0f)
+        {
+
+            // Pass to movement component
+            movement.SetMoveRotation(newRotation);
+        }
     }
 
     public void OnDrawGizmosSelected()

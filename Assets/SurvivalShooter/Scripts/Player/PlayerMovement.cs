@@ -88,9 +88,10 @@ public class PlayerMovement : MonoBehaviour
         
         // Remove y-velocity for ground movement calculations
         Vector3 movementXZ = new Vector3(movement.x, 0.0f, movement.z);
+        movementXZ = Vector3.ClampMagnitude(movementXZ, 1.0f);
         
         // Normalise the movement vector and make it proportional to the speed per second.
-        movementXZ = movementXZ.normalized * (effectiveSpeed * Time.deltaTime);
+        movementXZ = movementXZ * (effectiveSpeed * Time.deltaTime);
 
         movement.x = movementXZ.x;
         // y is retained
