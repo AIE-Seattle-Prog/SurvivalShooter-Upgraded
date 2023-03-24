@@ -82,6 +82,9 @@ public class PlayerHealth : MonoBehaviour
 
     void Death ()
     {
+        // prevent repeat calls
+        if(isDead) { return; }
+
         // Set the death flag so this function won't be called again.
         isDead = true;
 
