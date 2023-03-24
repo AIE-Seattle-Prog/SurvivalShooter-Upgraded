@@ -318,7 +318,7 @@ TextureImporter:
       213: 1577607885664053619
     second: zoomOut.png
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -339,6 +339,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -347,12 +348,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -377,6 +378,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -392,6 +394,66 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -2620,6 +2682,112 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      export.png: 4239346041830918806
+      rewind.png: -869406387866546132
+      leaderboardsComplex.png: -7018549794172680781
+      exitLeft.png: 3999583502058961509
+      fastForward.png: -2355230250300051002
+      buttonY.png: -4810793389549230527
+      unlocked.png: -6225728103860230744
+      contrast.png: -6440189838374560736
+      joystickRight.png: 443104393006425266
+      save.png: -6214745833511771774
+      movie.png: 8572757746843422038
+      larger.png: 686083024303582406
+      audioOff.png: 8319944002063198478
+      siganl1.png: -4370372055666874733
+      button1.png: -3453086605141882848
+      singleplayer.png: 1005348837326076657
+      buttonR1.png: -2295948942342521627
+      wrench.png: -8470071178431628797
+      musicOff.png: -9037754027111891819
+      gamepad2.png: -840640734148751335
+      smaller.png: 9140517125725739830
+      multiplayer.png: -7346022228416653951
+      tablet.png: 5520572416001304624
+      trophy.png: 1655169075771072174
+      gamepad.png: -3078106470151409867
+      medal1.png: 6286883370974741685
+      exit.png: -5028549275612091375
+      trashcan.png: -3887591347895904989
+      buttonSelect.png: -4550992465144503061
+      information.png: 6154813887308698421
+      import.png: -5211900057194834813
+      gamepad1.png: -9070904514148113133
+      locked.png: 3203092129211887065
+      joystickUp.png: 3645699925362288486
+      arrowDown.png: 1407255126695759551
+      leaderboardsSimple.png: 1865660123117117562
+      buttonStart.png: 5083223980707794022
+      share2.png: -2661710568232492843
+      upRight.png: 3376461799764990963
+      signal2.png: -3682277749220213412
+      menuList.png: -3008561244949402640
+      arrowUp.png: -357415847780348738
+      plus.png: -7716867609197774020
+      phone.png: 4946553078311872846
+      zoomDefault.png: 3109320278394089771
+      minus.png: -4187626317685827546
+      power.png: 6051532407599621979
+      previous.png: 6486486813833053867
+      up.png: -6287701025186399607
+      button2.png: -5039412736317956011
+      zoomOut.png: 1577607885664053619
+      audioOn.png: 5090832317927876681
+      next.png: 9090241293363611299
+      zoomIn.png: 324405858798490846
+      right.png: -906322148090493398
+      stop.png: 710735504549460844
+      arrowRight.png: -2478050544971688687
+      buttonL2.png: -1859944181104010563
+      barsHorizontal.png: 7802272120026076115
+      shoppingCart.png: 7389236040472600328
+      massiveMultiplayer.png: 7495407050906113908
+      gamepad4.png: -2518593036848501560
+      musicOn.png: -3022253808028923820
+      mouse.png: 7259958804768897625
+      downRight.png: -6103616259881431844
+      signal3.png: 1377930568393336135
+      star.png: 3650903073793279168
+      home.png: 7505336336829588910
+      barsVertical.png: -4166218700399020042
+      trashcanOpen.png: -3050887996731662973
+      video.png: 7086575144780503312
+      zoom.png: 4153980308600302442
+      arrowLeft.png: 1309945655532641325
+      left.png: -8840592317678324963
+      cross.png: -7977485648941512968
+      down.png: -1584980009504256807
+      target.png: -2209764341624344895
+      buttonX.png: -7870752689730825486
+      question.png: -6807898117432210529
+      menuGrid.png: -7125779143597130985
+      buttonB.png: -7279127022619494200
+      warning.png: 562471364654916225
+      checkmark.png: -6757493061965858497
+      scrollHorizontal.png: -4612431537267831505
+      downLeft.png: 2929053046184164313
+      gamepad3.png: -7182594094111359572
+      buttonL.png: -350342858321020583
+      buttonR2.png: -3362251382676529462
+      buttonL1.png: -6227916983888025438
+      share1.png: -1116336072310975019
+      medal2.png: -5000024983899584762
+      exclamation.png: -5968442420592806587
+      joystickLeft.png: -2581070667061233122
+      open.png: -874591128755217387
+      gear.png: -7356612350256844443
+      buttonA.png: -1749683308693790306
+      shoppingBasket.png: 2945735075986712717
+      pause.png: 7803104373762071890
+      buttonR.png: -3932449289085774843
+      exitRight.png: 2160779275155683482
+      button3.png: 4989355532551509537
+      scrollVertical.png: -1625053630880432694
+      return.png: 9040033031345551915
+      upLeft.png: -9152075397669011260
+      joystick.png: 7023243169575057824
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

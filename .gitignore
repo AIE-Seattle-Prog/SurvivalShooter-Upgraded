@@ -5,6 +5,7 @@ obj/
 Logs/
 UserSettings/
 Recordings/
+ProjectSettings/boot.config
 
 Builds/
 
