@@ -248,6 +248,17 @@
                 },
                 {
                     "name": "",
+                    "id": "d93e6573-7ecd-4795-b288-70827aad9b7d",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "aba81ae6-3b86-4722-bc82-f3e60382a350",
                     "path": "<Keyboard>/space",
                     "interactions": "",
