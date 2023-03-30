@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.Audio;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,6 +18,8 @@ public class PauseManager : MonoBehaviour
 
 	public bool IsPaused => Time.timeScale == 0;
 
+	public GameObject pausePanel;
+
 
 	private void Awake()
     {
@@ -30,7 +33,7 @@ public class PauseManager : MonoBehaviour
 
 	public void SetPause(bool shouldPause)
 	{
-		canvas.enabled = shouldPause;
+		pausePanel.SetActive(shouldPause);
 		PauseTime(shouldPause);
 	}
 
