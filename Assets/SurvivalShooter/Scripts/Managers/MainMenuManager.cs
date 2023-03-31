@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -88,7 +90,7 @@ public class MainMenuManager : MonoBehaviour
         if (newMenu.TryGetComponent<CanvasGroup>(out var newGroup))
         {
             newGroup.alpha = 0.0f;
-            await DoAlphaTransitionAsync(newMenu.GetComponent<CanvasGroup>(), 1.0f, 0.3f, transitionCancellationSource.Token);
+            await DoAlphaTransitionAsync(newMenu.GetComponent<CanvasGroup>(), 1.0f, 0.1f, transitionCancellationSource.Token);
         }
     }
 
@@ -136,45 +138,7 @@ public class MainMenuManager : MonoBehaviour
     {
         Application.Quit();
     }
-
-    private async void PresentMainMenu(CancellationToken token)
-    {
-        try
-        {
-            animRunner.AddClip(startClip, "Start");
-            animRunner.Play("Start");
-
-            playButton.interactable = false;
-            howToPlayButton.interactable = false;
-            settingsButton.interactable = false;
-            quitGameButton.interactable = false;
-
-            Debug.Log("Wait for animation...");
-
-            await UniTask.WaitUntil(() => !animRunner.isPlaying, cancellationToken: canvasCancellationSource.Token);
-
-            Debug.Log("Animation finished! Enable menu...");
-
-            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-            playButton.interactable = true;
-            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-            howToPlayButton.interactable = true;
-            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-            settingsButton.interactable = true;
-            await UniTask.Delay(100, cancellationToken: canvasCancellationSource.Token);
-            quitGameButton.interactable = true;
-        }
-        catch (OperationCanceledException)
-        {
-            Debug.Log("Main menu presentation cancelled");
-        }
-    }
     
-    private void Start()
-    {
-        PresentMainMenu(canvasCancellationSource.Token);
-    }
-
     private void OnEnable()
     {
         transitionCancellationSource = new CancellationTokenSource();
