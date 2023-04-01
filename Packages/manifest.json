@@ -45,7 +45,8 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.tayx.graphy": "3.0.2"
   },
   "scopedRegistries": [
     {
@@ -54,7 +55,8 @@
       "scopes": [
         "com.av.smart-hierarchy",
         "com.cysharp.unitask",
-        "com.openupm"
+        "com.openupm",
+        "com.tayx.graphy"
       ]
     }
   ]
