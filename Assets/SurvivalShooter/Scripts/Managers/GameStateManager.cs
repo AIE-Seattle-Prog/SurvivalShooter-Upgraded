@@ -8,10 +8,10 @@ public class GameStateManager : MonoBehaviour
 {
     [Header("Game State")]
     public float startDelay = 1.0f;
-    public AudioClip inProgressChime;
+    public AudioClipMetadata inProgressChime;
 
     public float gameOverDelay = 1.0f;
-    public AudioClip gameoverChime;
+    public AudioClipMetadata gameoverChime;
 
     public float restartDelay = 3.0f;
     

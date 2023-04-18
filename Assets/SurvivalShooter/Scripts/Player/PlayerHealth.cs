@@ -9,11 +9,11 @@ public class PlayerHealth : MonoBehaviour
     public int startingHealth = 100;                            // The amount of health the player starts the game with.
     public int currentHealth;                                   // The current health the player has.
     [SerializeField]
-    private Slider healthSlider;                                 // Reference to the UI's health bar.
+    private Slider healthSlider;                                // Reference to the UI's health bar.
     [SerializeField]
-    private Image damageImage;                                   // Reference to an image to flash on the screen on being hurt.
+    private Image damageImage;                                  // Reference to an image to flash on the screen on being hurt.
     [SerializeField]
-    private AudioClip deathClip;                                 // The audio clip to play when the player dies.
+    private AudioClipMetadata deathClip;                        // The audio clip to play when the player dies.
     public float flashSpeed = 5f;                               // The speed the damageImage will fade at.
     public Color flashColour = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
     
@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     private AudioSource playerAudio;                                    // Reference to the AudioSource component.
     [SerializeField]
-    private AudioClip playerHurtSound;
+    private AudioClipMetadata playerHurtSound;
     [SerializeField]
     private PlayerMovement playerMovement;                              // Reference to the player's movement.
     [SerializeField]
@@ -94,9 +94,9 @@ public class PlayerHealth : MonoBehaviour
         // Tell the animator that the player is dead.
         anim.SetTrigger ("Die");
 
-        // Set the audiosource to play the death clip and play it (this will stop the hurt sound from playing).
-        playerAudio.clip = deathClip;
-        playerAudio.Play ();
+        // Stop audiosource the hurt sound from playing and play the death sound.
+        playerAudio.Stop();
+        playerAudio.PlayOneShot(deathClip);
 
         // Turn off the movement and shooting scripts.
         playerMovement.enabled = false;
