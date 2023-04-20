@@ -3968,7 +3968,7 @@ GameObject:
   - component: {fileID: 1789499703}
   - component: {fileID: 1789499708}
   m_Layer: 0
-  m_Name: Panel
+  m_Name: SubtitlePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

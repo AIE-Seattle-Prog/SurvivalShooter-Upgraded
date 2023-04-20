@@ -44,6 +44,12 @@ public class SubtitlePanel : MonoBehaviour
 
     public void AddSubtitle(string subtitle, float displayTime)
     {
+        // early exit if subtitle empty
+        if(string.IsNullOrWhiteSpace(subtitle))
+        {
+            return;
+        }
+
         // remove the oldest subtitle if we would have too many
         if (activeSubtitles.Count+1 > maxSubtitleCount)
         {
@@ -88,7 +94,7 @@ public class SubtitlePanel : MonoBehaviour
         string finalText = "";
         if (showSubtitles && clip.HasSpokenText) finalText += clip.SpokenText;
         if (showClosedCaptioning  && clip.HasClosedCaptioningText) finalText += $"[{clip.ClosedCaptioningText}]";
-        
+
         AddSubtitle(finalText, clip.TimeToDisplay);
     }
     

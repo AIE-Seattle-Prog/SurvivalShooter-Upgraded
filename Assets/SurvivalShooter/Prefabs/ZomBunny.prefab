@@ -231,6 +231,7 @@ MonoBehaviour:
   sinkSpeed: 2.5
   scoreValue: 10
   deathClip: {fileID: 11400000, guid: 9667853532a52564086c83b639ea1dfb, type: 2}
+  hurtClip: {fileID: 11400000, guid: 842712c5d89e06141b8b532157aac57f, type: 2}
   knockbackImpulse: 0.2
   hitParticles: {fileID: 19800000}
   deathParticles: {fileID: 19800002}
