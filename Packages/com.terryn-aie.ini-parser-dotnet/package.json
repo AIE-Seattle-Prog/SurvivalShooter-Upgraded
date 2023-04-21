@@ -1,0 +1,17 @@
+{
+    "name": "com.terryn-aie.ini-parser-dotnet",
+    "version": "2.6.0",
+    "displayName": "INI File Parser",
+    "description": "A .NET, Mono and Unity3d compatible(*) library for reading/writing INI data from IO streams, file streams, and strings written in C#.",
+    "unity": "2019.3",
+    "license": "MIT",
+    "keywords": [
+        "ini",
+        "settings"
+    ],
+    "author": {
+        "name": "Terry Nguyen",
+        "email": "terry.nguyen@aie.edu",
+        "url": "https://github.com/terryn-aie"
+    }
+}

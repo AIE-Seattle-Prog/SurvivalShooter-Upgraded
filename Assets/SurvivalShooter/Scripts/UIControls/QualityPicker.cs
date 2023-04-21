@@ -10,11 +10,20 @@ public class QualityPicker : MonoBehaviour
 
     private void OnEnable()
     {
-        toggles[QualitySettings.GetQualityLevel()].SetIsOnWithoutNotify(true);
+        int qualityLevel = QualitySettings.GetQualityLevel();
+        if (qualityLevel <= toggles.Count)
+        {
+            toggles[qualityLevel].SetIsOnWithoutNotify(true);
+        }
+        else
+        {
+            Debug.LogWarning("Unknown quality level - is this for a specific platform?");
+        }
     }
 
     public void SetQualitySetting(int index)
     {
-        QualitySettings.SetQualityLevel(index); 
+        QualitySettings.SetQualityLevel(index);
+        UserSettingsSystem.GraphicsPreset = index;
     }
 }
