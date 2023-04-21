@@ -18,3 +18,4 @@ MonoBehaviour:
     weight: 1
   - enemyPrefab: {fileID: 100002, guid: e5171f72421770240bd7c3989fe351e3, type: 3}
     weight: 1
+  enemyOverrides: []

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Round Config", menuName = "Survival Shooter/Enemy/Enemy Round Config", order = 0)]
 public class EnemyRoundConfig : ScriptableObject
 {
+    [Tooltip("Number of enemies to spawn in this wave")]
     public int numberOfEnemies;
 
     [System.Serializable]
@@ -18,10 +19,13 @@ public class EnemyRoundConfig : ScriptableObject
     public struct EnemyPlan
     {
         public GameObject enemy;
+        [Tooltip("The index that will guarantee the spawning of this enemy")]
         public int position;
     }
 
+    [Tooltip("A weighted list of enemy types to spawn")]
     public List<EnemyChance> enemyChances = new List<EnemyChance>();
+    [Tooltip("A list of specific enemies to spawn in the spawn sequence")]
     public List<EnemyPlan> enemyOverrides = new List<EnemyPlan>();
 
     public int MaxRollValue => maxBreakpointValue;
