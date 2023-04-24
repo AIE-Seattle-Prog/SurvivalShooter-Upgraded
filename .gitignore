@@ -1,13 +1,13 @@
 # Unity
-Library/
-Temp/
-obj/
-Logs/
-UserSettings/
-Recordings/
-ProjectSettings/boot.config
+/Library/
+/Temp/
+/obj/
+/Logs/
+/UserSettings/
+/Recordings/
+/ProjectSettings/boot.config
 
-Builds/
+/Builds/
 
 # Rider
 .idea/
@@ -16,6 +16,12 @@ Builds/
 .vs/
 .vscode/
 
-.vsconfig
+/.vsconfig
 *.sln
 *.csproj
+
+# Certificates
+*.cert
+*.privkey
+*.pfx
+*.pfx.meta

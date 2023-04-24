@@ -14,6 +14,12 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.firtoz.unity3d-textureatlasslicer": {
+      "version": "file:com.firtoz.unity3d-textureatlasslicer",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.tayx.graphy": {
       "version": "3.0.2",
       "depth": 0,

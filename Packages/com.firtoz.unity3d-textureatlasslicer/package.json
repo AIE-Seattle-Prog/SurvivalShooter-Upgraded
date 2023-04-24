@@ -1,0 +1,17 @@
+{
+  "name": "com.firtoz.unity3d-textureatlasslicer",
+  "version": "5.1.0",
+  "displayName": "Unity3D-TextureAtlasSlicer",
+  "description": "Simple and fast tool to import XML spritesheets (TextureAtlas) into Unity3D!",
+  "unity": "2017.1",
+  "license": "MIT",
+  "keywords": [
+    "Sprite",
+    "XML",
+    "TextureAtlas"
+  ],
+  "author": {
+    "name": "firtoz",
+    "url": "https://github.com/firtoz"
+  }
+}
