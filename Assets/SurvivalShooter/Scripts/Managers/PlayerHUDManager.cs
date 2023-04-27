@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHUDManager : MonoBehaviour
+public class PlayerHUDManager : MonoBehaviour, IMapCheck
 {
+    [HeaderCentered("UI Elements")]
     public Text enemyCount;
     public string formatter = "00";
 
@@ -46,5 +47,14 @@ public class PlayerHUDManager : MonoBehaviour
     private void HandleEnemyCountUpdated(int arg0)
     {
         enemyCount.text = GameStateManager.Instance.enemyManager.EnemiesRemaining.ToString(formatter);
+    }
+
+    public bool Check()
+    {
+        if(enemyCount == null) { return false; }
+        if(hudAnimator == null) { return false; }
+        if(roundHud == null) { return false; }
+
+        return true;
     }
 }
