@@ -7,6 +7,9 @@
 /Recordings/
 /ProjectSettings/boot.config
 
+# Unity Addressables
+/Assets/AddressableAssetsData/addressables_content_state.bin
+
 /Builds/
 
 # Rider
@@ -22,6 +25,8 @@
 
 # Certificates
 *.cert
+*.cert.meta
 *.privkey
+*.privkey.meta
 *.pfx
 *.pfx.meta

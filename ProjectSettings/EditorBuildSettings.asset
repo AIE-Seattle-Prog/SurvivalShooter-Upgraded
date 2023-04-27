@@ -12,5 +12,7 @@ EditorBuildSettings:
     path: Assets/SurvivalShooter/Scenes/Game.unity
     guid: 874e24e631d7345b0a29cc297bedb405
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: ca435fc8f7e7da8418e8391e9aa55306,
+      type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 609e763330e127444a3e1ea4aa63f517,
       type: 2}

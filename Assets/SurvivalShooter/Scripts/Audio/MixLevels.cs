@@ -38,9 +38,6 @@ public class MixLevels : MonoBehaviour {
 		float userSound = Mathf.InverseLerp(minAttenuation, maxAttenuation, UserSettingsSystem.SoundLevel) * 100f;
 		float userMusic = Mathf.InverseLerp(minAttenuation, maxAttenuation, UserSettingsSystem.MusicLevel) * 100f;
 
-		SetSfxLvl(userSound);
-		SetMusicLvl(userMusic);
-
 		soundSlider.SetValueWithoutNotify(userSound);
 		musicSlider.SetValueWithoutNotify(userMusic);
     }
