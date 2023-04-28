@@ -26,6 +26,19 @@ public static class UserSettingsSystem
         set => musicLevel = value;
     }
 
+    private static bool showSubtitle = true;
+    public static bool ShowSubtitle
+    {
+        get => showSubtitle;
+        set => showSubtitle = value;
+    }
+    private static bool showClosedCaptions = true;
+    public static bool ShowClosedCaptions
+    {
+        get => showClosedCaptions;
+        set => showClosedCaptions = value;
+    }
+
     private static int graphicsPreset = -1;
     public static int GraphicsPreset
     {
@@ -45,6 +58,8 @@ public static class UserSettingsSystem
 
         data["audio"]["sound"] = SoundLevel.ToString();
         data["audio"]["music"] = MusicLevel.ToString();
+        data["audio"]["showSubtitles"] = ShowSubtitle.ToString();
+        data["audio"]["showClosedCaptions"] = ShowClosedCaptions.ToString();
         data["graphics"]["preset"] = GraphicsPreset.ToString();
 
         parser.WriteFile(CONFIG_PATH, data);
@@ -57,10 +72,12 @@ public static class UserSettingsSystem
 
         if (data.TryGetKey("audio.sound", out var soundStr)) { SoundLevel = float.Parse(soundStr); }
         if (data.TryGetKey("audio.music", out var musicStr)) { MusicLevel = float.Parse(musicStr); }
+        if (data.TryGetKey("audio.showSubtitles", out var subtitleStr)) { ShowSubtitle = bool.Parse(subtitleStr); }
+        if (data.TryGetKey("audio.showClosedCaptions", out var closedCapStr)) { ShowClosedCaptions = bool.Parse(closedCapStr); }
         if (data.TryGetKey("graphics.preset", out var graphicsStr)) { GraphicsPreset = int.Parse(graphicsStr); }
     }
 
-    [RuntimeInitializeOnLoadMethod]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void OnApplicationInit()
     {
         if(File.Exists(CONFIG_PATH))

@@ -13,9 +13,27 @@ public class SubtitlePanel : MonoBehaviour
     public GameObject subtitlePrefab;
 
     private List<SubtitleDisplay> activeSubtitles = new();
-    
-    public bool showSubtitles = true;
-    public bool showClosedCaptioning = true;
+
+    private bool showSubtitles;
+    public bool ShowSubtitles
+    {
+        get => showSubtitles;
+        set
+        {
+            showSubtitles = value;
+            UserSettingsSystem.ShowSubtitle = value;
+        }
+    }
+    private bool showClosedCaptioning;
+    public bool ShowClosedCaptioning
+    {
+        get => showClosedCaptioning;
+        set
+        {
+            showClosedCaptioning = value;
+            UserSettingsSystem.ShowClosedCaptions = value;
+        }
+    }
     
     public int maxSubtitleCount = 3;
 
@@ -92,8 +110,8 @@ public class SubtitlePanel : MonoBehaviour
         }
         
         string finalText = "";
-        if (showSubtitles && clip.HasSpokenText) finalText += clip.SpokenText;
-        if (showClosedCaptioning  && clip.HasClosedCaptioningText) finalText += $"[{clip.ClosedCaptioningText}]";
+        if (ShowSubtitles && clip.HasSpokenText) finalText += clip.SpokenText;
+        if (ShowClosedCaptioning  && clip.HasClosedCaptioningText) finalText += $"[{clip.ClosedCaptioningText}]";
 
         AddSubtitle(finalText, clip.TimeToDisplay);
     }
@@ -111,6 +129,12 @@ public class SubtitlePanel : MonoBehaviour
         Instance = this;
 
         canvasGroup.alpha = activeSubtitles.Count > 0 ? 1.0f : 0.0f;
+    }
+
+    private void OnEnable()
+    {
+        ShowSubtitles = UserSettingsSystem.ShowSubtitle;
+        ShowClosedCaptioning = UserSettingsSystem.ShowClosedCaptions;
     }
 
     private void FixedUpdate()
