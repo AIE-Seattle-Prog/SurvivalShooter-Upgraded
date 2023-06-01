@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿using TNRD.Autohook;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class EnemyHealth : MonoBehaviour
 {
+    [field: SerializeField, AutoHook(ReadOnlyWhenFound = true)]
+    public EnemyController Controller { get; private set; }
+
     public int startingHealth = 100;            // The amount of health the enemy starts the game with.
     public int currentHealth;                   // The current health the enemy has.
     public float sinkSpeed = 2.5f;              // The speed at which the enemy sinks through the floor when dead.

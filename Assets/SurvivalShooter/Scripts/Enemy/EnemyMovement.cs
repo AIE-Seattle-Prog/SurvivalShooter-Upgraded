@@ -1,37 +1,25 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
+using TNRD.Autohook;
 
 public class EnemyMovement : MonoBehaviour
 {
-    Transform player;               // Reference to the player's position.
-    PlayerHealth playerHealth;      // Reference to the player's health.
-    EnemyHealth enemyHealth;        // Reference to this enemy's health.
-    UnityEngine.AI.NavMeshAgent nav;               // Reference to the nav mesh agent.
+    [field: SerializeField, AutoHook(ReadOnlyWhenFound = true)]
+    public NavMeshAgent Nav { get; private set; }               // Reference to the nav mesh agent.
 
-
-    void Awake ()
+    public void SetDestination(Vector3 newDestination)
     {
-        // Set up the references.
-        player = GameObject.FindGameObjectWithTag ("Player").transform;
-        playerHealth = player.GetComponent <PlayerHealth> ();
-        enemyHealth = GetComponent <EnemyHealth> ();
-        nav = GetComponent <UnityEngine.AI.NavMeshAgent> ();
+        Nav.SetDestination(newDestination);
     }
 
-
-    void Update ()
+    private void OnEnable()
     {
-        // If the enemy and the player have health left...
-        if(enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0)
-        {
-            // ... set the destination of the nav mesh agent to the player.
-            nav.SetDestination (player.position);
-        }
-        // Otherwise...
-        else
-        {
-            // ... disable the nav mesh agent.
-            nav.enabled = false;
-        }
+        Nav.enabled = true;
+    }
+
+    private void OnDisable()
+    {
+        Nav.enabled = false;
     }
 }

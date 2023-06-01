@@ -21,6 +21,7 @@ public class EnemyManager : MonoBehaviour
     private CancellationTokenSource spawnerCancellationSource;
 
     // TODO: replace this with the 'enemiesSpawned' hashset
+    private int playerTargetSelectionIndex;
     private int enemyCount;
     public int EnemyCount
     {
@@ -46,7 +47,7 @@ public class EnemyManager : MonoBehaviour
     
     // TODO: figure this out from enemyCount
     private int enemiesKilled;
-    private HashSet<EnemyHealth> enemiesSpawned;
+    private HashSet<EnemyController> enemiesSpawned;
     public int EnemiesRemaining => EnemyQuota - enemiesKilled;
 
     public void SetSpawnerConfig(EnemyRoundConfig config)
@@ -138,24 +139,28 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private EnemyHealth SpawnEnemy(GameObject enemyPrefab, Vector3 position, Quaternion rotation)
+    private EnemyController SpawnEnemy(GameObject enemyPrefab, Vector3 position, Quaternion rotation)
     {
         var babyEnemy = Instantiate(enemyPrefab, position, rotation);
         ++EnemyCount;
         ++enemySpawnCount;
 
-        EnemyHealth enemyHealth = babyEnemy.GetComponent<EnemyHealth>();
-        enemiesSpawned.Add(enemyHealth);
-        enemyHealth.OnDeath.AddListener(HandleEnemyDeath);
+        EnemyController newEnemy = babyEnemy.GetComponent<EnemyController>();
 
-        return enemyHealth;
+        playerTargetSelectionIndex = (playerTargetSelectionIndex + 1) % PlayerManagerSystem.PlayerCount;
+
+        newEnemy.TargetPlayer = PlayerManagerSystem.GetPlayer(playerTargetSelectionIndex).GetComponent<PlayerController>();
+        enemiesSpawned.Add(newEnemy);
+        newEnemy.Health.OnDeath.AddListener(HandleEnemyDeath);
+
+        return newEnemy;
     }
 
     private void HandleEnemyDeath(EnemyHealth enemy)
     {
         ++enemiesKilled;
         --EnemyCount;
-        enemiesSpawned.Remove(enemy);
+        enemiesSpawned.Remove(enemy.Controller);
     }
 
     private void RefreshCancellationTokenSource()
@@ -176,7 +181,7 @@ public class EnemyManager : MonoBehaviour
         //       
         //       capacity will be retained after a clear
         //       https://stackoverflow.com/questions/6771917/why-cant-i-preallocate-a-hashsett
-        enemiesSpawned = new HashSet<EnemyHealth>(new List<EnemyHealth>(maxActiveEnemies));
+        enemiesSpawned = new HashSet<EnemyController>(new List<EnemyController>(maxActiveEnemies));
         enemiesSpawned.Clear();
     }
 

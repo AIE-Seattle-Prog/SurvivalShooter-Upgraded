@@ -34,6 +34,7 @@ MonoBehaviour:
     - com.cysharp.unitask
     - com.openupm
     - com.tayx.graphy
+    - net.tnrd.autohook
     m_IsDefault: 0
     m_Capabilities: 0
     m_ConfigSource: 4

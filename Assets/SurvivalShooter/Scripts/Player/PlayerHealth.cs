@@ -1,17 +1,14 @@
 ﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.SceneManagement;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int startingHealth = 100;                            // The amount of health the player starts the game with.
     public int currentHealth;                                   // The current health the player has.
-    [SerializeField]
-    private Slider healthSlider;                                // Reference to the UI's health bar.
-    [SerializeField]
-    private Image damageImage;                                  // Reference to an image to flash on the screen on being hurt.
+    public UnityEvent<int> OnHealthChanged { get; private set; } = new();
     [SerializeField]
     private AudioClipMetadata deathClip;                        // The audio clip to play when the player dies.
     public float flashSpeed = 5f;                               // The speed the damageImage will fade at.
@@ -30,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
     
     private bool isDead;                                                // Whether the player is dead.
     private bool damaged;                                               // True when the player gets damaged.
-    
+
     void Start()
     {
         // Set the initial health of the player.
@@ -39,19 +36,6 @@ public class PlayerHealth : MonoBehaviour
     
     void Update ()
     {
-        // If the player has just been damaged...
-        if(damaged)
-        {
-            // ... set the colour of the damageImage to the flash colour.
-            damageImage.color = flashColour;
-        }
-        // Otherwise...
-        else
-        {
-            // ... transition the colour back to clear.
-            damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
-        }
-
         // Reset the damaged flag.
         damaged = false;
     }
@@ -59,14 +43,13 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage (int amount)
     {
+        if(amount == 0) return;
+
         // Set the damaged flag so the screen will flash.
         damaged = true;
 
         // Reduce the current health by the damage amount.
         currentHealth -= amount;
-
-        // Set the health bar's value to the current health.
-        healthSlider.value = currentHealth;
 
         // Play the hurt sound effect.
         playerAudio.PlayOneShot(playerHurtSound);
@@ -77,6 +60,9 @@ public class PlayerHealth : MonoBehaviour
             // ... it should die.
             Death ();
         }
+
+        // Notify OnHealthChanged
+        OnHealthChanged.Invoke(currentHealth);
     }
 
 

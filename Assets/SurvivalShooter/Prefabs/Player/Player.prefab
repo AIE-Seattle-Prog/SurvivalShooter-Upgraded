@@ -183,12 +183,12 @@ MonoBehaviour:
   currentHealth: 0
   healthSlider: {fileID: 0}
   damageImage: {fileID: 0}
-  deathClip: {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}
+  deathClip: {fileID: 11400000, guid: 987b2bf5694b60748a138f7257bb9cdb, type: 2}
   flashSpeed: 5
   flashColour: {r: 1, g: 0, b: 0, a: 0.1}
   anim: {fileID: 3731580488794163854}
   playerAudio: {fileID: 8200002}
-  playerHurtSound: {fileID: 8300000, guid: 9922a12f34d0a084aab32de985459723, type: 3}
+  playerHurtSound: {fileID: 11400000, guid: 96568ba62caf4ce47b59e316379344ae, type: 2}
   playerMovement: {fileID: 176715523}
   playerShooting: {fileID: 2025858298516265474}
 --- !u!114 &176715523
@@ -330,6 +330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400008}
   - component: {fileID: 10800002}
+  - component: {fileID: 2497474588041121231}
   m_Layer: 0
   m_Name: FaceLight
   m_TagString: Untagged
@@ -414,6 +415,26 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &2497474588041121231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &759758669
 GameObject:
   m_ObjectHideFlags: 0

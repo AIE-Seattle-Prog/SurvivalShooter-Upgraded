@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("Using current control scheme: " + input.currentControlScheme);
-        Debug.Log("Using current action map: " + input.currentActionMap);
+        Debug.Log("Using current control scheme: " + input.currentControlScheme, this);
+        Debug.Log("Using current action map: " + input.currentActionMap, this);
 
         input.currentActionMap["Fire"].performed += HandleFire;
         input.currentActionMap["Fire"].canceled += HandleFire;
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        if (gameObject.scene.isLoaded)
+        if (input != null && input.currentActionMap != null)
         {
             input.currentActionMap["Fire"].performed -= HandleFire;
             input.currentActionMap["Fire"].canceled -= HandleFire;
@@ -59,11 +59,6 @@ public class PlayerController : MonoBehaviour
             input.currentActionMap["Aim"].performed -= HandleAim;
             input.currentActionMap["Turn"].performed -= HandleTurn;
         }
-    }
-
-    private void Update()
-    {
-
     }
 
     private void HandlePause(CallbackContext obj)
@@ -144,11 +139,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 rawWorld = new Vector3(raw.x, 0.0f, raw.y);
 
-        // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
-        Quaternion newRotation = Quaternion.LookRotation(rawWorld);
-
         if (rawWorld.sqrMagnitude > 0.0f)
         {
+            // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
+            Quaternion newRotation = Quaternion.LookRotation(rawWorld);
 
             // Pass to movement component
             movement.SetMoveRotation(newRotation);

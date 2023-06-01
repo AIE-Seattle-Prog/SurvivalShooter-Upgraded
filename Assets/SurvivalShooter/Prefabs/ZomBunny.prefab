@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 11400002}
   - component: {fileID: 11400000}
   - component: {fileID: 8200000}
+  - component: {fileID: -1702197468112004126}
   m_Layer: 9
   m_Name: ZomBunny
   m_TagString: Untagged
@@ -226,6 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b9d14572410594cb85d40eedfb150c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Controller>k__BackingField: {fileID: -1702197468112004126}
   startingHealth: 100
   currentHealth: 0
   sinkSpeed: 2.5
@@ -264,6 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f6618a0da65fa45b24d5105d5d8422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Nav>k__BackingField: {fileID: 19500000}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 0
@@ -361,6 +364,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &-1702197468112004126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31fe3ee1513bb24a97d26402ff85bde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Health>k__BackingField: {fileID: 11400004}
+  <Movement>k__BackingField: {fileID: 11400000}
+  <TargetPlayer>k__BackingField: {fileID: 0}
 --- !u!1 &100004
 GameObject:
   m_ObjectHideFlags: 0

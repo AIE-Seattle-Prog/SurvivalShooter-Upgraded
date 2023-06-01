@@ -48,7 +48,8 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "net.tnrd.autohook": "1.0.1"
   },
   "scopedRegistries": [
     {
@@ -58,7 +59,8 @@
         "com.av.smart-hierarchy",
         "com.cysharp.unitask",
         "com.openupm",
-        "com.tayx.graphy"
+        "com.tayx.graphy",
+        "net.tnrd.autohook"
       ]
     }
   ]

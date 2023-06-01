@@ -10502,6 +10502,7 @@ GameObject:
   - component: {fileID: -7826874753222954461}
   - component: {fileID: 2512258296275162785}
   - component: {fileID: 8231521017349001493}
+  - component: {fileID: -3370787031902133021}
   m_Layer: 9
   m_Name: Skeledan
   m_TagString: Untagged
@@ -10595,6 +10596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f6618a0da65fa45b24d5105d5d8422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Nav>k__BackingField: {fileID: 1489257994644520922}
 --- !u!114 &1489257994644520925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10607,11 +10609,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b9d14572410594cb85d40eedfb150c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
   startingHealth: 100
   currentHealth: 0
   sinkSpeed: 2.5
   scoreValue: 10
   deathClip: {fileID: 11400000, guid: 13de028436fadaa438c251afcf29d859, type: 2}
+  hurtClip: {fileID: 0}
   knockbackImpulse: 0.2
   hitParticles: {fileID: 664755349898065797}
   deathParticles: {fileID: 513561116724844792}
@@ -10758,3 +10762,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &-3370787031902133021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8174756258586021215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31fe3ee1513bb24a97d26402ff85bde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <TargetPlayer>k__BackingField: {fileID: 0}
+  <Health>k__BackingField: {fileID: 1489257994644520925}
+  <Movement>k__BackingField: {fileID: 1489257994644520924}

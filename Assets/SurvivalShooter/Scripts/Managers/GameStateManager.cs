@@ -42,8 +42,6 @@ public class GameStateManager : MonoBehaviour
 
     [field: Header("Sub-Managers")]
     [field: SerializeField]
-    public PlayerHealth playerHealth { get; private set; }       // Reference to the player's health.    
-    [field: SerializeField]
     public EnemyManager enemyManager { get; private set; }
     [field: SerializeField]
     public Animator hudAnimator { get; private set; }       // Reference to the animator component.
@@ -132,6 +130,7 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         currentSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
+        //PlayerManagerSystem.Instance.
         ToGameState(GameState.Warmup);
     }
 
@@ -148,7 +147,19 @@ public class GameStateManager : MonoBehaviour
                 }
                 break;
             case GameState.InProgress:
-                if (playerHealth.currentHealth <= 0)
+                bool allPlayersDead = true;
+
+                for(int i = 0; i < PlayerManagerSystem.PlayerCount; ++i)
+                {
+                    var health = PlayerManagerSystem.GetPlayer(i).GetComponent<PlayerHealth>();
+                    if(health.currentHealth > 0)
+                    {
+                        allPlayersDead = false;
+                        break;
+                    }
+                }
+
+                if (allPlayersDead)
                 {
                     transitionDelay -= Time.deltaTime;
                     if (transitionDelay <= 0.0f)

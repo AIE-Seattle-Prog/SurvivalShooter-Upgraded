@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Join",
+                    "type": "Button",
+                    "id": "1a504983-8c7b-490e-a481-9affd589b391",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -87,7 +96,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "MoveHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -98,7 +107,7 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "MoveHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -108,7 +117,7 @@
                     "id": "de94a790-d07c-4b70-bfd4-2198fa80dcb8",
                     "path": "1DAxis",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "AxisDeadzone",
                     "groups": "",
                     "action": "MoveHorizontal",
                     "isComposite": true,
@@ -120,7 +129,7 @@
                     "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "MoveHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -131,7 +140,7 @@
                     "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "MoveHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -153,7 +162,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "MoveVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -164,7 +173,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "MoveVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -174,7 +183,7 @@
                     "id": "b51b4d3e-292a-46bc-aaac-d57e12b9819b",
                     "path": "1DAxis",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "AxisDeadzone",
                     "groups": "",
                     "action": "MoveVertical",
                     "isComposite": true,
@@ -186,7 +195,7 @@
                     "path": "<Gamepad>/leftStick/down",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "MoveVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -197,7 +206,7 @@
                     "path": "<Gamepad>/leftStick/up",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "MoveVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -208,7 +217,7 @@
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -219,7 +228,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -230,7 +239,7 @@
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -241,7 +250,7 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -252,7 +261,7 @@
                     "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -263,7 +272,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "PC (Mouse and Keyboard)",
+                    "groups": "Mouse and Keyboard",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -274,8 +283,41 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "StickDeadzone",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13c0db08-4303-4017-8142-00316e17cdc5",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "Join",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "08b9f970-d688-4038-a76c-dc407bdd47a5",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Join",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d68dd80-1a7a-4957-8299-ba2e61c6c93a",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Join",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -284,14 +326,9 @@
     ],
     "controlSchemes": [
         {
-            "name": "PC (Mouse and Keyboard)",
-            "bindingGroup": "PC (Mouse and Keyboard)",
+            "name": "Mouse and Keyboard",
+            "bindingGroup": "Mouse and Keyboard",
             "devices": [
-                {
-                    "devicePath": "<Gamepad>",
-                    "isOptional": true,
-                    "isOR": false
-                },
                 {
                     "devicePath": "<Mouse>",
                     "isOptional": false,
@@ -305,14 +342,20 @@
             ]
         },
         {
-            "name": "Mobile (Touch)",
-            "bindingGroup": "Mobile (Touch)",
+            "name": "Touch",
+            "bindingGroup": "Touch",
             "devices": [
                 {
                     "devicePath": "<Touchscreen>",
                     "isOptional": false,
                     "isOR": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Gamepad",
+            "bindingGroup": "Gamepad",
+            "devices": [
                 {
                     "devicePath": "<Gamepad>",
                     "isOptional": false,

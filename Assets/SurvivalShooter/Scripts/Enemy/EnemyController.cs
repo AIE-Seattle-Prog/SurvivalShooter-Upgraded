@@ -1,0 +1,56 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TNRD.Autohook;
+
+public class EnemyController : MonoBehaviour
+{
+    [field: SerializeField, AutoHook(ReadOnlyWhenFound = true)]
+    public EnemyHealth Health { get; private set; }
+    [field: SerializeField, AutoHook(ReadOnlyWhenFound = true)]
+    public EnemyMovement Movement { get; private set; }
+    
+    [field: Space, SerializeField]
+    public PlayerController TargetPlayer { get; set; }
+
+    private void Update()
+    {
+        // early exit if no target or no health
+        if (TargetPlayer == null || Health.currentHealth <= 0) { return; }
+
+        // If the enemy and the player have health left...
+        if (TargetPlayer.health.currentHealth > 0)
+        {
+            // ... set the destination of the nav mesh agent to the player.
+            Movement.SetDestination(TargetPlayer.transform.position);
+        }
+        // Otherwise, change targets...
+        else
+        {
+            PlayerController newTarget = null;
+
+            int rngSelection = Random.Range(0, PlayerManagerSystem.PlayerCount);
+            for(int i = 0; i < PlayerManagerSystem.PlayerCount; ++i)
+            {
+                PlayerController candidate = PlayerManagerSystem.GetPlayer((rngSelection + i) % PlayerManagerSystem.PlayerCount).GetComponent<PlayerController>();
+                if(candidate.health.currentHealth > 0)
+                {
+                    newTarget = candidate;
+                    break;
+                }
+            }
+
+            if (newTarget != null)
+            {
+                TargetPlayer = newTarget;
+                Movement.enabled = true;
+            }
+            else
+            {
+                // ... disable the nav mesh agent.
+                Movement.enabled = false;
+            }
+            
+        }
+    }
+}

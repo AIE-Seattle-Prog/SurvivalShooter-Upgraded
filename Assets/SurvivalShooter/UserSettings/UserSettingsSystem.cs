@@ -137,7 +137,7 @@ public static class UserSettingsSystem
         }
     }
 
-    static void OnApplicationQuit()
+    private static void OnApplicationQuit()
     {
         Debug.Log("Game shutting down, saving settings!");
 
