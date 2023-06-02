@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Cinemachine;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -45,6 +46,8 @@ public class GameStateManager : MonoBehaviour
     public EnemyManager enemyManager { get; private set; }
     [field: SerializeField]
     public Animator hudAnimator { get; private set; }       // Reference to the animator component.
+    [field: SerializeField]
+    public CinemachineTargetGroup CameraGroup { get; private set; }
 
     public void RestartLevel ()
     {
