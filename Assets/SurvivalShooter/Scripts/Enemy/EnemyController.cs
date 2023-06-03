@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
     public EnemyMovement Movement { get; private set; }
     
     [field: Space, SerializeField]
-    public PlayerController TargetPlayer { get; set; }
+    public PlayerCharacter TargetPlayer { get; set; }
 
     private void Update()
     {
@@ -27,12 +27,12 @@ public class EnemyController : MonoBehaviour
         // Otherwise, change targets...
         else
         {
-            PlayerController newTarget = null;
+            PlayerCharacter newTarget = null;
 
             int rngSelection = Random.Range(0, PlayerManagerSystem.PlayerCount);
             for(int i = 0; i < PlayerManagerSystem.PlayerCount; ++i)
             {
-                PlayerController candidate = PlayerManagerSystem.GetPlayer((rngSelection + i) % PlayerManagerSystem.PlayerCount).GetComponent<PlayerController>();
+                PlayerCharacter candidate = PlayerManagerSystem.GetPlayer((rngSelection + i) % PlayerManagerSystem.PlayerCount).Character;
                 if(candidate.health.currentHealth > 0)
                 {
                     newTarget = candidate;

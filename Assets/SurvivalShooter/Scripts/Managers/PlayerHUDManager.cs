@@ -17,7 +17,7 @@ public class PlayerHUDManager : MonoBehaviour, IMapCheck
 
     private void OnEnable()
     {
-        GameStateManager.Instance.enemyManager.OnEnemyCountChanged.AddListener(HandleEnemyCountUpdated);
+        GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.AddListener(HandleEnemyCountUpdated);
         GameStateManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
     }
 
@@ -40,13 +40,13 @@ public class PlayerHUDManager : MonoBehaviour, IMapCheck
 
     private void OnDisable()
     {
-        GameStateManager.Instance.enemyManager.OnEnemyCountChanged.RemoveListener(HandleEnemyCountUpdated);
+        GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.RemoveListener(HandleEnemyCountUpdated);
         GameStateManager.Instance.OnGameStateChanged.RemoveListener(HandleGameStateChanged);
     }
 
     private void HandleEnemyCountUpdated(int arg0)
     {
-        enemyCount.text = GameStateManager.Instance.enemyManager.EnemiesRemaining.ToString(formatter);
+        enemyCount.text = GameStateManager.Instance.EnemyManager.EnemiesRemaining.ToString(formatter);
     }
 
     public bool Check()

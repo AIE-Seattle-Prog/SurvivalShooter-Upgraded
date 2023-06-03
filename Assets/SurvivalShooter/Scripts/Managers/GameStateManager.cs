@@ -8,6 +8,7 @@ using Cinemachine;
 public class GameStateManager : MonoBehaviour
 {
     [Header("Game State")]
+    public GameObject PlayerCharacterPrefab;
     public float startDelay = 1.0f;
     public AudioClipMetadata inProgressChime;
 
@@ -26,6 +27,7 @@ public class GameStateManager : MonoBehaviour
     public enum GameState
     {
         None,
+        WaitingForConnection,
         Warmup,
         InProgress,
         End
@@ -43,9 +45,9 @@ public class GameStateManager : MonoBehaviour
 
     [field: Header("Sub-Managers")]
     [field: SerializeField]
-    public EnemyManager enemyManager { get; private set; }
+    public EnemyManager EnemyManager { get; private set; }
     [field: SerializeField]
-    public Animator hudAnimator { get; private set; }       // Reference to the animator component.
+    public Animator HudAnimator { get; private set; }       // Reference to the animator component.
     [field: SerializeField]
     public CinemachineTargetGroup CameraGroup { get; private set; }
 
@@ -61,14 +63,13 @@ public class GameStateManager : MonoBehaviour
         Debug.Log("Exiting game state: " + CurrentGameState);
         switch (CurrentGameState)
         {
+            case GameState.WaitingForConnection:
             case GameState.None:
-                // left blank intentionally
-                break;
             case GameState.Warmup:
                 break;
             case GameState.InProgress:
                 // turn off all of the spawners
-                enemyManager.enabled = false;
+                EnemyManager.enabled = false;
                 break;
             case GameState.End:
                 break;
@@ -81,17 +82,16 @@ public class GameStateManager : MonoBehaviour
         Debug.Log("Entering game state: " + newState);
         switch (newState)
         {
+            case GameState.WaitingForConnection:
             case GameState.None:
-                // left blank intentionally
-                break;
             case GameState.Warmup:
                 transitionDelay = startDelay;
                 break;
             case GameState.InProgress:
                 ++CurrentRound;
-                enemyManager.SetSpawnerConfig(rounds[CurrentRound]);
-                enemyManager.ResetSpawnCounts();
-                enemyManager.enabled = true;
+                EnemyManager.SetSpawnerConfig(rounds[CurrentRound]);
+                EnemyManager.ResetSpawnCounts();
+                EnemyManager.enabled = true;
 
                 transitionDelay = gameOverDelay;
                 Debug.Log($"Round {CurrentRound + 1}, starting!");
@@ -99,7 +99,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.End:
                 // tell the animator the game is over.
-                hudAnimator.SetTrigger ("GameOver");
+                HudAnimator.SetTrigger ("GameOver");
                 transitionDelay = restartDelay;
                 if(gameoverChime != null) { gameStateAudioSource.PlayOneShot(gameoverChime); }
                 break;
@@ -115,6 +115,30 @@ public class GameStateManager : MonoBehaviour
         OnGameStateChanged.Invoke(CurrentGameState);
     }
 
+    //
+    //
+    //
+
+    private void AddPlayer(PlayerController player)
+    {
+        var newBody = Instantiate(PlayerCharacterPrefab);
+        player.Possess(newBody.GetComponent<PlayerCharacter>());
+        CameraGroup.AddMember(newBody.transform, 1.0f, 1.0f);
+    }
+
+    //
+    // Framework Handlers
+    //
+
+    void HandleOnPlayerJoined(PlayerController newPlayer)
+    {
+        AddPlayer(newPlayer);
+    }
+
+    //
+    // MonoBehaviour Magic
+    //
+
     private void Awake()
     {
         if (Instance == null)
@@ -128,13 +152,21 @@ public class GameStateManager : MonoBehaviour
             Destroy(this);
             return;
         }
+
+        for(int i = 0; i < PlayerManagerSystem.PlayerCount; ++i)
+        {
+            HandleOnPlayerJoined(PlayerManagerSystem.GetPlayer(i));
+        }
+
+        PlayerManagerSystem.OnPlayerJoined.AddListener(HandleOnPlayerJoined);
     }
 
     private void Start()
     {
         currentSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
-        //PlayerManagerSystem.Instance.
-        ToGameState(GameState.Warmup);
+        ToGameState(GameState.WaitingForConnection);
+
+        // TODO: add players that are already joined
     }
 
     private void Update()
@@ -142,6 +174,12 @@ public class GameStateManager : MonoBehaviour
         var nextState = CurrentGameState;
         switch (CurrentGameState)
         {
+            case GameState.WaitingForConnection:
+                if(PlayerManagerSystem.PlayerCount > 0)
+                {
+                    nextState = GameState.Warmup;
+                }
+                break;
             case GameState.Warmup:
                 transitionDelay -= Time.deltaTime;
                 if (transitionDelay <= 0.0f)
@@ -154,7 +192,7 @@ public class GameStateManager : MonoBehaviour
 
                 for(int i = 0; i < PlayerManagerSystem.PlayerCount; ++i)
                 {
-                    var health = PlayerManagerSystem.GetPlayer(i).GetComponent<PlayerHealth>();
+                    var health = PlayerManagerSystem.GetPlayer(i).Character.health;
                     if(health.currentHealth > 0)
                     {
                         allPlayersDead = false;
@@ -170,7 +208,7 @@ public class GameStateManager : MonoBehaviour
                         nextState = GameState.End;
                     }
                 }
-                else if (enemyManager.IsEnemyQuotaMet && enemyManager.EnemiesRemaining <= 0)
+                else if (EnemyManager.IsEnemyQuotaMet && EnemyManager.EnemiesRemaining <= 0)
                 {
                     if (CurrentRound + 1 < rounds.Length)
                     {

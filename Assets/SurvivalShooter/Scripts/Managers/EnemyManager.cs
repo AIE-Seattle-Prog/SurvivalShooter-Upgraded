@@ -149,7 +149,7 @@ public class EnemyManager : MonoBehaviour
 
         playerTargetSelectionIndex = (playerTargetSelectionIndex + 1) % PlayerManagerSystem.PlayerCount;
 
-        newEnemy.TargetPlayer = PlayerManagerSystem.GetPlayer(playerTargetSelectionIndex).GetComponent<PlayerController>();
+        newEnemy.TargetPlayer = PlayerManagerSystem.GetPlayer(playerTargetSelectionIndex).GetComponent<PlayerCharacter>();
         enemiesSpawned.Add(newEnemy);
         newEnemy.Health.OnDeath.AddListener(HandleEnemyDeath);
 

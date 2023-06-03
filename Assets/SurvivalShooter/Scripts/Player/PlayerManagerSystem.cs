@@ -6,21 +6,25 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Events;
 
 public static class PlayerManagerSystem
 {
     public static int PlayerCount { get; private set; }
-    private static List<GameObject> PlayerObjects = new();
+    private static List<PlayerController> PlayerObjects = new();
 
     public static PlayerManager Instance { get; private set; }
     public static PlayerInputManager PlayerInputs => Instance.PlayerInputs;
 
     private static AsyncOperationHandle<GameObject> loadSystemInstanceOperation;
     
-    public static GameObject GetPlayer(int playerIndex) => PlayerObjects[playerIndex];
+    public static PlayerController GetPlayer(int playerIndex) => PlayerObjects[playerIndex];
+
+    public static UnityEvent<PlayerController> OnPlayerJoined { get; private set; }
+    public static UnityEvent<PlayerController> OnPlayerLeft { get; private set; }
 
     //
-    // Engine Lifecycle
+    // Engine Handlers
     //
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -30,6 +34,10 @@ public static class PlayerManagerSystem
         Instance = null;
         PlayerCount = 0;
         PlayerObjects = new();
+        
+        // reininitialize events
+        OnPlayerJoined = new();
+        OnPlayerLeft = new();
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -37,11 +45,6 @@ public static class PlayerManagerSystem
     {
         loadSystemInstanceOperation = Addressables.LoadAssetAsync<GameObject>("PlayerManager");
         loadSystemInstanceOperation.Completed += HandlePlayerManagerSystemReady;
-    }
-
-    private static void OnActiveSceneChanged(Scene oldScene, Scene newScene)
-    {
-        // spawn and possess new objects for all players
     }
 
     //
@@ -59,9 +62,6 @@ public static class PlayerManagerSystem
 
             PlayerInputs.onPlayerJoined += HandlePlayerJoinedEvent;
             PlayerInputs.onPlayerLeft += HandlePlayerLeftEvent;
-
-            SceneManager.activeSceneChanged += OnActiveSceneChanged;
-            OnActiveSceneChanged(new Scene(), SceneManager.GetActiveScene());
         }
         else
         {
@@ -72,23 +72,23 @@ public static class PlayerManagerSystem
     private static void HandlePlayerJoinedEvent(PlayerInput arg0)
     {
         ++PlayerCount;
-        PlayerObjects.Add(arg0.gameObject);
+        PlayerObjects.Add(arg0.GetComponent<PlayerController>());
+        UnityEngine.Object.DontDestroyOnLoad(arg0.gameObject);
 
-        // TODO - players won't always need/have a group camera. hand this off to
-        // an object that can reside in the scene.
-        GameStateManager.Instance.CameraGroup.AddMember(arg0.transform, 1.0f, 1.0f);
+        // TODO: cache these instead
+        OnPlayerJoined.Invoke(arg0.GetComponent<PlayerController>());
 
         Debug.Log("Player joined!");
     }
 
     private static void HandlePlayerLeftEvent(PlayerInput arg0)
     {
-        PlayerObjects.Remove(arg0.gameObject);
+        PlayerObjects.Remove(arg0.GetComponent<PlayerController>());
         --PlayerCount;
+        // No need to destroy, engine will take care of it if needed
 
-        // TODO - players won't always need/have a group camera. hand this off to
-        // an object that can reside in the scene.
-        GameStateManager.Instance.CameraGroup.RemoveMember(arg0.transform);
+        // TODO: access from cache instead
+        OnPlayerLeft.Invoke(arg0.GetComponent<PlayerController>());
 
         Debug.Log("Player left!");
     }

@@ -1859,6 +1859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectiveLabel: {fileID: 920981676}
+  waitingText: Waiting for Players...
   warmupText: Get Ready...
   inProgressText: Try to Survive!
   gameoverText: Game Over
@@ -4549,6 +4550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c9e0011c2ed97428a4efc03b455359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerCharacterPrefab: {fileID: 100006, guid: 4e5a0d387dc27394b81600988ad0216f,
+    type: 3}
   startDelay: 5
   inProgressChime: {fileID: 11400000, guid: 167c5718aeabcb24e99d6d74bb6fd056, type: 2}
   gameOverDelay: 1
@@ -4566,8 +4569,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 745a8ea0ef114fe48a175f44689521f6, type: 2}
   - {fileID: 11400000, guid: a0a19b3a3060da04d95733fc96b08045, type: 2}
   - {fileID: 11400000, guid: 9e8b4d6e8ed849a4dbb0da3f378d5597, type: 2}
-  <enemyManager>k__BackingField: {fileID: 14871711}
-  <hudAnimator>k__BackingField: {fileID: 1139190137}
+  <EnemyManager>k__BackingField: {fileID: 14871711}
+  <HudAnimator>k__BackingField: {fileID: 1139190137}
   <CameraGroup>k__BackingField: {fileID: 1826227836}
 --- !u!4 &1871149646
 Transform:

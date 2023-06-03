@@ -7,6 +7,7 @@ public class PlayerObjectiveUI : MonoBehaviour
 {
     public UnityEngine.UI.Text objectiveLabel;
 
+    public string waitingText = "Waiting for Players...";
     public string warmupText = "Warmup";
     public string inProgressText = "In Progress";
     public string gameoverText = "Game Over";
@@ -15,6 +16,7 @@ public class PlayerObjectiveUI : MonoBehaviour
     
     private void Start()
     {
+        HandleGameStateChanged(GameStateManager.Instance.CurrentGameState);
         GameStateManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
     }
 
@@ -31,6 +33,9 @@ public class PlayerObjectiveUI : MonoBehaviour
     {
         switch (newState)
         {
+            case GameStateManager.GameState.WaitingForConnection:
+                objectiveLabel.text = waitingText;
+                break;
             case GameStateManager.GameState.Warmup:
                 objectiveLabel.text = warmupText;
                 break;
