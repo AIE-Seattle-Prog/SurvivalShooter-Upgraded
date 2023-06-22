@@ -15,11 +15,11 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        // early exit if no target or no health
-        if (TargetPlayer == null || Health.currentHealth <= 0) { return; }
+        // early exit if no health
+        if (Health.currentHealth <= 0) { return; }
 
         // If the enemy and the player have health left...
-        if (TargetPlayer.health.currentHealth > 0)
+        if (TargetPlayer != null && TargetPlayer.health.currentHealth > 0)
         {
             // ... set the destination of the nav mesh agent to the player.
             Movement.SetDestination(TargetPlayer.transform.position);
