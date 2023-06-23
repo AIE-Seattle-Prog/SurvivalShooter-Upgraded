@@ -165,8 +165,6 @@ public class GameStateManager : MonoBehaviour
     {
         currentSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
         ToGameState(GameState.WaitingForConnection);
-
-        // TODO: add players that are already joined
     }
 
     private void Update()

@@ -12,6 +12,7 @@ public class PlayerCharacter : MonoBehaviour
     public PlayerMovement movement;
     public PlayerShooting shoot;
     public PlayerController Controller { get; private set; }
+    private InputActionMap lastBoundActionMap;
     
     [Header("Settings")]
     public float shootPlaneOffset = 0.0f;
@@ -21,16 +22,21 @@ public class PlayerCharacter : MonoBehaviour
     public LayerMask floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
     public float camRayLength = 100f;          // The length of the ray from the camera into the scene.
 
+    private bool didBindInputs = false;
+
     //
     // Character Binding
     //
 
     public void BindToController(PlayerController player)
     {
+        Debug.Assert(false == didBindInputs, "Failed to unbind inputs from previous controller before binding to new one!", this);
         Controller = player;
 
         Debug.Log("Using current control scheme: " + Controller.Input.currentControlScheme, this);
         Debug.Log("Using current action map: " + Controller.Input.currentActionMap, this);
+
+        didBindInputs = true;
 
         Controller.Input.currentActionMap["Fire"].performed += HandleFire;
         Controller.Input.currentActionMap["Fire"].canceled += HandleFire;
@@ -45,28 +51,36 @@ public class PlayerCharacter : MonoBehaviour
         
         Controller.Input.currentActionMap["Aim"].performed += HandleAim;
         Controller.Input.currentActionMap["Turn"].performed += HandleTurn;
+
+        lastBoundActionMap = Controller.Input.currentActionMap;
     }
 
     public void UnbindFromController()
     {
-        if (Controller != null &&
-            Controller.Input != null &&
-            Controller.Input.currentActionMap != null)
+        bool wasBoundInputs = didBindInputs;
+
+        if (lastBoundActionMap != null)
         {
-            Controller.Input.currentActionMap["Fire"].performed -= HandleFire;
-            Controller.Input.currentActionMap["Fire"].canceled -= HandleFire;
-            
-            Controller.Input.currentActionMap["MoveHorizontal"].performed -= HandleMoveHorizontal;
-            Controller.Input.currentActionMap["MoveHorizontal"].canceled -= HandleMoveHorizontal;
-            
-            Controller.Input.currentActionMap["MoveVertical"].performed -= HandleMoveVertical;
-            Controller.Input.currentActionMap["MoveVertical"].canceled -= HandleMoveVertical;
-            
-            Controller.Input.currentActionMap["Pause"].performed -= HandlePause;
-            
-            Controller.Input.currentActionMap["Aim"].performed -= HandleAim;
-            Controller.Input.currentActionMap["Turn"].performed -= HandleTurn;
+            lastBoundActionMap["Fire"].performed -= HandleFire;
+            lastBoundActionMap["Fire"].canceled -= HandleFire;
+
+            lastBoundActionMap["MoveHorizontal"].performed -= HandleMoveHorizontal;
+            lastBoundActionMap["MoveHorizontal"].canceled -= HandleMoveHorizontal;
+
+            lastBoundActionMap["MoveVertical"].performed -= HandleMoveVertical;
+            lastBoundActionMap["MoveVertical"].canceled -= HandleMoveVertical;
+
+            lastBoundActionMap["Pause"].performed -= HandlePause;
+
+            lastBoundActionMap["Aim"].performed -= HandleAim;
+            lastBoundActionMap["Turn"].performed -= HandleTurn;
+
+            lastBoundActionMap = null;
+
+            didBindInputs = false;
         }
+
+        Debug.Assert(false == (wasBoundInputs && didBindInputs), "Failed to unbind inputs! Erroneous input events may occur.", this);
 
         Controller = null;
     }

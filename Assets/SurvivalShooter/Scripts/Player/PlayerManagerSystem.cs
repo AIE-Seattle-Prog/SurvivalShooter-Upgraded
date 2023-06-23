@@ -38,6 +38,8 @@ public static class PlayerManagerSystem
         // reininitialize events
         OnPlayerJoined = new();
         OnPlayerLeft = new();
+        Application.quitting -= HandleApplicationQuit;
+        Application.quitting += HandleApplicationQuit;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -91,5 +93,14 @@ public static class PlayerManagerSystem
         OnPlayerLeft.Invoke(arg0.GetComponent<PlayerController>());
 
         Debug.Log("Player left!");
+    }
+
+    private static void HandleApplicationQuit()
+    {
+        while(PlayerObjects.Count > 0)
+        {
+            UnityEngine.Object.Destroy(PlayerObjects[0].gameObject);
+        }
+        Debug.Assert(PlayerObjects.Count == 0);
     }
 }

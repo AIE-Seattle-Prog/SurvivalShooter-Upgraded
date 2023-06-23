@@ -11,12 +11,14 @@ public class PlayerController : MonoBehaviour
 
     public void Possess(PlayerCharacter newBody)
     {
+        Debug.Log("Possess!", this);
         Character = newBody;
         Character.BindToController(this);   
     }
 
     public void Unpossess()
     {
+        Debug.Log("Unpossess!", this);
         if (Character != null)
         {
             Character.UnbindFromController();

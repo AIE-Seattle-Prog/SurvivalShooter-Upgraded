@@ -14,11 +14,16 @@ public class PlayerHUDManager : MonoBehaviour, IMapCheck
 
     [SerializeField]
     private RoundHUDManager roundHud;
+    [SerializeField]
+    private HealthWidget[] healthWidgets;
 
-    private void OnEnable()
+    public bool Check()
     {
-        GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.AddListener(HandleEnemyCountUpdated);
-        GameStateManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
+        if (enemyCount == null) { return false; }
+        if (hudAnimator == null) { return false; }
+        if (roundHud == null) { return false; }
+
+        return true;
     }
 
     private void HandleGameStateChanged(GameStateManager.GameState arg0)
@@ -38,23 +43,40 @@ public class PlayerHUDManager : MonoBehaviour, IMapCheck
         }
     }
 
-    private void OnDisable()
-    {
-        GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.RemoveListener(HandleEnemyCountUpdated);
-        GameStateManager.Instance.OnGameStateChanged.RemoveListener(HandleGameStateChanged);
-    }
-
     private void HandleEnemyCountUpdated(int arg0)
     {
         enemyCount.text = GameStateManager.Instance.EnemyManager.EnemiesRemaining.ToString(formatter);
     }
 
-    public bool Check()
+    private void HandlePlayerJoined(PlayerController arg0)
     {
-        if(enemyCount == null) { return false; }
-        if(hudAnimator == null) { return false; }
-        if(roundHud == null) { return false; }
+        HealthWidget targetWidget = null;
+        foreach(var curHealth in healthWidgets)
+        {
+            if(curHealth.OwningPlayer == null)
+            {
+                targetWidget = curHealth;
+                break;
+            }
+        }
 
-        return true;
+        Debug.Assert(targetWidget != null, "Could not find a health widget for this player!");
+
+        targetWidget.BindToPlayer(arg0);
+    }
+
+    private void OnEnable()
+    {
+        PlayerManagerSystem.OnPlayerJoined.AddListener(HandlePlayerJoined);
+        GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.AddListener(HandleEnemyCountUpdated);
+        GameStateManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
+    }
+
+
+    private void OnDisable()
+    {
+        PlayerManagerSystem.OnPlayerJoined.RemoveListener(HandlePlayerJoined);
+        GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.RemoveListener(HandleEnemyCountUpdated);
+        GameStateManager.Instance.OnGameStateChanged.RemoveListener(HandleGameStateChanged);
     }
 }
