@@ -48,7 +48,7 @@ public class PlayerHUDManager : MonoBehaviour, IMapCheck
         enemyCount.text = GameStateManager.Instance.EnemyManager.EnemiesRemaining.ToString(formatter);
     }
 
-    private void HandlePlayerJoined(PlayerController arg0)
+    private void HandlePlayerStarted(PlayerController arg0)
     {
         HealthWidget targetWidget = null;
         foreach(var curHealth in healthWidgets)
@@ -67,15 +67,14 @@ public class PlayerHUDManager : MonoBehaviour, IMapCheck
 
     private void OnEnable()
     {
-        PlayerManagerSystem.OnPlayerJoined.AddListener(HandlePlayerJoined);
+        GameStateManager.Instance.OnPlayerStart.AddListener(HandlePlayerStarted);
         GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.AddListener(HandleEnemyCountUpdated);
         GameStateManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
     }
 
-
     private void OnDisable()
     {
-        PlayerManagerSystem.OnPlayerJoined.RemoveListener(HandlePlayerJoined);
+        GameStateManager.Instance.OnPlayerStart.RemoveListener(HandlePlayerStarted);
         GameStateManager.Instance.EnemyManager.OnEnemyCountChanged.RemoveListener(HandleEnemyCountUpdated);
         GameStateManager.Instance.OnGameStateChanged.RemoveListener(HandleGameStateChanged);
     }

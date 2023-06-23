@@ -13,23 +13,21 @@ public class PauseManager : MonoBehaviour
 
 	public AudioMixerSnapshot paused;
 	public AudioMixerSnapshot unpaused;
-	
-	Canvas canvas;
 
 	public bool IsPaused => Time.timeScale == 0;
 
 	public GameObject pausePanel;
 
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+	private static void HandleGameReset()
+    {
+		Instance = null;
+    }
 
 	private void Awake()
     {
 		Instance = this;
     }
-
-    private void Start()
-	{
-		canvas = GetComponent<Canvas>();
-	}
 
 	public void SetPause(bool shouldPause)
 	{

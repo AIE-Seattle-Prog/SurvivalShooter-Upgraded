@@ -60,6 +60,12 @@ public class SubtitlePanel : MonoBehaviour
     
     public static SubtitlePanel Instance { get; private set; }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void HandleGameReset()
+    {
+        Instance = null;
+    }
+
     public void AddSubtitle(string subtitle, float displayTime)
     {
         // early exit if subtitle empty

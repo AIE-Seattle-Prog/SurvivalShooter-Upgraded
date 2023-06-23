@@ -34,8 +34,10 @@ public class GameStateManager : MonoBehaviour
     }
     public GameState CurrentGameState { get; private set; }
     
-    public UnityEvent<GameState> OnGameStateChanged; 
-    
+    public UnityEvent<GameState> OnGameStateChanged;
+    public UnityEvent<PlayerController> OnPlayerStart;
+    public UnityEvent<PlayerController> OnPlayerQuit;
+
     public static GameStateManager Instance { get; private set; }
 
     [Header("Game Settings")]
@@ -124,6 +126,8 @@ public class GameStateManager : MonoBehaviour
         var newBody = Instantiate(PlayerCharacterPrefab);
         player.Possess(newBody.GetComponent<PlayerCharacter>());
         CameraGroup.AddMember(newBody.transform, 1.0f, 1.0f);
+
+        OnPlayerStart?.Invoke(player);
     }
 
     //
@@ -133,6 +137,16 @@ public class GameStateManager : MonoBehaviour
     void HandleOnPlayerJoined(PlayerController newPlayer)
     {
         AddPlayer(newPlayer);
+    }
+
+    //
+    // Engine Handlers
+    //
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    void HandleGameReset()
+    {
+        Instance = null;
     }
 
     //
@@ -152,18 +166,19 @@ public class GameStateManager : MonoBehaviour
             Destroy(this);
             return;
         }
-
-        for(int i = 0; i < PlayerManagerSystem.PlayerCount; ++i)
-        {
-            HandleOnPlayerJoined(PlayerManagerSystem.GetPlayer(i));
-        }
-
-        PlayerManagerSystem.OnPlayerJoined.AddListener(HandleOnPlayerJoined);
     }
 
     private void Start()
     {
         currentSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // spawn existing players
+        for (int i = 0; i < PlayerManagerSystem.PlayerCount; ++i)
+        {
+            HandleOnPlayerJoined(PlayerManagerSystem.GetPlayer(i));
+        }
+        PlayerManagerSystem.OnPlayerJoined.AddListener(HandleOnPlayerJoined);
+
         ToGameState(GameState.WaitingForConnection);
     }
 

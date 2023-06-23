@@ -46,8 +46,8 @@ public static class UserSettingsSystem
         set => graphicsPreset = value;
     }
 
-    public static string CONFIG_NAME = "config.ini";
-    public static string CONFIG_PATH = Application.persistentDataPath + "/" + CONFIG_NAME;
+    public readonly static string CONFIG_NAME = "config.ini";
+    public readonly static string CONFIG_PATH = Application.persistentDataPath + "/" + CONFIG_NAME;
 
     private static IniData data;
     private static AsyncOperationHandle<AudioMixer> loadMixerOperation;
@@ -80,7 +80,15 @@ public static class UserSettingsSystem
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void OnApplicationInit()
     {
-        if(File.Exists(CONFIG_PATH))
+        soundLevel = -10;
+        musicLevel = -10;
+        showSubtitle = true;
+        showClosedCaptions = true;
+        graphicsPreset = -1;
+        data = null;
+        loadMixerOperation = new();
+
+        if (File.Exists(CONFIG_PATH))
         {
             LoadSettings();
         }
