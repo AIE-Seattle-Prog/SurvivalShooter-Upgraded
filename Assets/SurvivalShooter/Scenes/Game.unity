@@ -5809,6 +5809,12 @@ MonoBehaviour:
   OnGameStateChanged:
     m_PersistentCalls:
       m_Calls: []
+  OnPlayerStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerQuit:
+    m_PersistentCalls:
+      m_Calls: []
   enemiesPerRound: 30
   rounds:
   - {fileID: 11400000, guid: 030d1a17e71e08246a6b4d7c00f6e7bf, type: 2}

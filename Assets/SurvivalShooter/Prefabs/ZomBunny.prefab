@@ -267,6 +267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Nav>k__BackingField: {fileID: 19500000}
+  <Anim>k__BackingField: {fileID: 9500000}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 0
@@ -378,6 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField: {fileID: 11400004}
   <Movement>k__BackingField: {fileID: 11400000}
+  <Anim>k__BackingField: {fileID: 9500000}
   <TargetPlayer>k__BackingField: {fileID: 0}
 --- !u!1 &100004
 GameObject:

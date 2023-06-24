@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b9d14572410594cb85d40eedfb150c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  <Controller>k__BackingField: {fileID: 0}
   startingHealth: 100
   currentHealth: 0
   sinkSpeed: 2.5
@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Nav>k__BackingField: {fileID: 19500000}
+  <Anim>k__BackingField: {fileID: 9500000}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 0
@@ -290,9 +291,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31fe3ee1513bb24a97d26402ff85bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <TargetPlayer>k__BackingField: {fileID: 0}
   <Health>k__BackingField: {fileID: 11400004}
   <Movement>k__BackingField: {fileID: 11400000}
+  <Anim>k__BackingField: {fileID: 9500000}
+  <TargetPlayer>k__BackingField: {fileID: 0}
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Events;
@@ -16,12 +16,19 @@ public static class PlayerManagerSystem
     public static PlayerManager Instance { get; private set; }
     public static PlayerInputManager PlayerInputs => Instance.PlayerInputs;
 
-    private static AsyncOperationHandle<GameObject> loadSystemInstanceOperation;
-    
     public static PlayerController GetPlayer(int playerIndex) => PlayerObjects[playerIndex];
 
+    /// <summary>
+    /// Called when a player joins the session. Players stay "joined", even across scene loads,
+    /// until they choose to leave.
+    /// </summary>
     public static UnityEvent<PlayerController> OnPlayerJoined { get; private set; }
+    /// <summary>
+    /// Called when a player leaves the session.
+    /// </summary>
     public static UnityEvent<PlayerController> OnPlayerLeft { get; private set; }
+    
+    private static AsyncOperationHandle<GameObject> loadSystemInstanceOperation;
 
     //
     // Engine Handlers

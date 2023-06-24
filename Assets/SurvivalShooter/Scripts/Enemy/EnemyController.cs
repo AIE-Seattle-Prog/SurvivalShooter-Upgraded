@@ -9,7 +9,9 @@ public class EnemyController : MonoBehaviour
     public EnemyHealth Health { get; private set; }
     [field: SerializeField, AutoHook(ReadOnlyWhenFound = true)]
     public EnemyMovement Movement { get; private set; }
-    
+    [field: SerializeField, AutoHook(ReadOnlyWhenFound = true)]
+    public Animator Anim { get; private set; }
+
     [field: Space, SerializeField]
     public PlayerCharacter TargetPlayer { get; set; }
 
@@ -27,6 +29,7 @@ public class EnemyController : MonoBehaviour
         // Otherwise, change targets...
         else
         {
+            bool hadTarget = TargetPlayer != null;
             PlayerCharacter newTarget = null;
 
             int rngSelection = Random.Range(0, PlayerManagerSystem.PlayerCount);
@@ -50,7 +53,11 @@ public class EnemyController : MonoBehaviour
                 // ... disable the nav mesh agent.
                 Movement.enabled = false;
             }
-            
+
+            bool hasTarget = newTarget != null;
+
+            // Update animator
+            if(hadTarget != hasTarget) { /**/ }
         }
     }
 }

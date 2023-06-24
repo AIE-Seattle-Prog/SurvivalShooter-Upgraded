@@ -10597,6 +10597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Nav>k__BackingField: {fileID: 1489257994644520922}
+  <Anim>k__BackingField: {fileID: 3231735125870267807}
 --- !u!114 &1489257994644520925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10609,7 +10610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b9d14572410594cb85d40eedfb150c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  <Controller>k__BackingField: {fileID: 0}
   startingHealth: 100
   currentHealth: 0
   sinkSpeed: 2.5
@@ -10774,6 +10775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31fe3ee1513bb24a97d26402ff85bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <TargetPlayer>k__BackingField: {fileID: 0}
   <Health>k__BackingField: {fileID: 1489257994644520925}
   <Movement>k__BackingField: {fileID: 1489257994644520924}
+  <Anim>k__BackingField: {fileID: 3231735125870267807}
+  <TargetPlayer>k__BackingField: {fileID: 0}

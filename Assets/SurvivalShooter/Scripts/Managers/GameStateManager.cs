@@ -34,8 +34,17 @@ public class GameStateManager : MonoBehaviour
     }
     public GameState CurrentGameState { get; private set; }
     
+    /// <summary>
+    /// Called after the game state transitions from one state to another
+    /// </summary>
     public UnityEvent<GameState> OnGameStateChanged;
+    /// <summary>
+    /// Called when a player starts playing in the current match
+    /// </summary>
     public UnityEvent<PlayerController> OnPlayerStart;
+    /// <summary>
+    /// Called when a player quits from the current match
+    /// </summary>
     public UnityEvent<PlayerController> OnPlayerQuit;
 
     public static GameStateManager Instance { get; private set; }
@@ -117,10 +126,6 @@ public class GameStateManager : MonoBehaviour
         OnGameStateChanged.Invoke(CurrentGameState);
     }
 
-    //
-    //
-    //
-
     private void AddPlayer(PlayerController player)
     {
         var newBody = Instantiate(PlayerCharacterPrefab);
@@ -134,7 +139,7 @@ public class GameStateManager : MonoBehaviour
     // Framework Handlers
     //
 
-    void HandleOnPlayerJoined(PlayerController newPlayer)
+    private void HandleOnPlayerJoined(PlayerController newPlayer)
     {
         AddPlayer(newPlayer);
     }
@@ -144,7 +149,7 @@ public class GameStateManager : MonoBehaviour
     //
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    void HandleGameReset()
+    private void HandleGameReset()
     {
         Instance = null;
     }
