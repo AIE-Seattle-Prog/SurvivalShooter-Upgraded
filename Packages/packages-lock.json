@@ -8,7 +8,7 @@
       "hash": "45caa0850b3b285e226687f148a317707f316edc"
     },
     "com.cysharp.unitask": {
-      "version": "2.3.3",
+      "version": "2.5.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -21,7 +21,7 @@
       "dependencies": {}
     },
     "com.tayx.graphy": {
-      "version": "3.0.2",
+      "version": "3.0.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -94,7 +94,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.15",
+      "version": "3.0.27",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -103,7 +103,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.16",
+      "version": "2.0.22",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -239,18 +239,8 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.10",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.vr": "1.0.0",
-        "com.unity.modules.xr": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "net.tnrd.autohook": {
-      "version": "1.0.1",
+      "version": "1.0.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
