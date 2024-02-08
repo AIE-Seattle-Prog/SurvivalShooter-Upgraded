@@ -50,6 +50,7 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Instance { get; private set; }
 
     [Header("Game Settings")]
+    public Transform SpawnPoint;
     public int enemiesPerRound = 30;
     public EnemyRoundConfig[] rounds;
     public int CurrentRound { get; private set; } = -1;
@@ -128,7 +129,7 @@ public class GameStateManager : MonoBehaviour
 
     private void AddPlayer(PlayerController player)
     {
-        var newBody = Instantiate(PlayerCharacterPrefab);
+        var newBody = Instantiate(PlayerCharacterPrefab, SpawnPoint.position, SpawnPoint.rotation);
         player.Possess(newBody.GetComponent<PlayerCharacter>());
         CameraGroup.AddMember(newBody.transform, 1.0f, 1.0f);
 
@@ -226,7 +227,7 @@ public class GameStateManager : MonoBehaviour
                         nextState = GameState.End;
                     }
                 }
-                else if (EnemyManager.IsEnemyQuotaMet && EnemyManager.EnemiesRemaining <= 0)
+                else if (EnemyManager.IsEnemyQuotaMet && EnemyManager.EnemiesRemaining <= 0 && EnemyManager.EnemyQuota != 0)
                 {
                     if (CurrentRound + 1 < rounds.Length)
                     {

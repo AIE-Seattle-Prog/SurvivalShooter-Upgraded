@@ -15,6 +15,8 @@ public class EnemyController : MonoBehaviour
     [field: Space, SerializeField]
     public PlayerCharacter TargetPlayer { get; set; }
 
+    public bool ShouldAutoAcquireTarget = true;
+
     private void Update()
     {
         // early exit if no health
@@ -26,8 +28,8 @@ public class EnemyController : MonoBehaviour
             // ... set the destination of the nav mesh agent to the player.
             Movement.SetDestination(TargetPlayer.transform.position);
         }
-        // Otherwise, change targets...
-        else
+        // Otherwise, if we have no target, get one (if enabled)...
+        else if (ShouldAutoAcquireTarget)
         {
             bool hadTarget = TargetPlayer != null;
             PlayerCharacter newTarget = null;
@@ -59,5 +61,30 @@ public class EnemyController : MonoBehaviour
             // Update animator
             if(hadTarget != hasTarget) { /**/ }
         }
+    }
+
+    public void HandleOnDetectBegin(GameObject detectedObject)
+    {
+        if (detectedObject.TryGetComponent(out PlayerCharacter player))
+        {
+            TargetPlayer = player;
+        }
+    }
+
+    public void HandleOnDetectEnd(GameObject detectedObject)
+    {
+        if (TargetPlayer.gameObject == detectedObject)
+        {
+            TargetPlayer = null;
+        }
+    }
+
+    public void HandleOnNoiseHeard(Vector3 noiseLocation)
+    {
+        // don't bother if we already have a player
+        if (TargetPlayer != null) { return; }
+
+        // otherwise, go investigate
+        Movement.SetDestination(noiseLocation);
     }
 }

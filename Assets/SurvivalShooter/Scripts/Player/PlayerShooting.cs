@@ -16,12 +16,17 @@ public class PlayerShooting : MonoBehaviour
     public ParticleSystem gunParticles;             // Reference to the particle system.
     public LineRenderer gunLine;                    // Reference to the line renderer.
     public AudioSource gunAudio;                    // Reference to the audio source.
+    [SerializeField]
+    private Noise gunshotNoise;
     public Light gunLight;                          // Reference to the light component.
-    
+
     public Light faceLight;							// Duh
     float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
 
     public bool isFiring = false;
+
+    [SerializeField]
+    private AINoisemaker aiNoisemaker;
 
     void Awake ()
     {
@@ -64,7 +69,8 @@ public class PlayerShooting : MonoBehaviour
         timer = 0f;
 
         // Play the gun shot audioclip.
-        gunAudio.Play ();
+        aiNoisemaker.CreateOneShotNoise(0);
+        //gunAudio.Play ();
 
         // Enable the lights.
         gunLight.enabled = true;
