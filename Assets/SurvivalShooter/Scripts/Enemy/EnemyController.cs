@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
 
     [field: Space, SerializeField]
     public PlayerCharacter TargetPlayer { get; set; }
+    private int TargetDetectionCount = 0;
 
     public bool ShouldAutoAcquireTarget = true;
 
@@ -65,17 +66,28 @@ public class EnemyController : MonoBehaviour
 
     public void HandleOnDetectBegin(GameObject detectedObject)
     {
-        if (detectedObject.TryGetComponent(out PlayerCharacter player))
+        if (TargetPlayer == null)
         {
+            PlayerCharacter player = detectedObject.GetComponent<Collider>().attachedRigidbody.GetComponent<PlayerCharacter>();
             TargetPlayer = player;
         }
+
+        Debug.Log("Target Acquired - " + detectedObject.name);
+        ++TargetDetectionCount;
     }
 
     public void HandleOnDetectEnd(GameObject detectedObject)
     {
-        if (TargetPlayer.gameObject == detectedObject)
+        if (TargetPlayer != null)
         {
-            TargetPlayer = null;
+            --TargetDetectionCount;
+
+            Debug.Assert(TargetDetectionCount >= 0, "TargetDetectionCount should never be negative.");
+            if (TargetDetectionCount == 0)
+            {
+                Debug.Log("Target Lost - " + detectedObject.name);
+                TargetPlayer = null;
+            }
         }
     }
 
