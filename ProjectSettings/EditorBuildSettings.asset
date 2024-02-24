@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/SurvivalShooter/Scenes/Game_Tile.unity
+    guid: 226211b9a73101b43b0357bd231d45a0
+  - enabled: 1
     path: Assets/SurvivalShooter/Scenes/Menu.unity
     guid: bfa92ea4b7529244286442067698cdc2
   - enabled: 1
